@@ -1,0 +1,15 @@
+[package]
+name = "ast-call-core"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Core library for ast-call semantic caller analysis"
+
+[dependencies]
+serde = { workspace = true }
+serde_json = { workspace = true }
+rusqlite = { workspace = true }
+ignore = { workspace = true }
+walkdir = { workspace = true }
+anyhow = { workspace = true }
+thiserror = { workspace = true }

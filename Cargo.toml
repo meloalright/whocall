@@ -1,0 +1,26 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/ast-call-core",
+    "crates/ast-call-cli",
+    "crates/ast-call-lang-rust",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+
+[workspace.dependencies]
+ast-call-core = { path = "crates/ast-call-core" }
+ast-call-lang-rust = { path = "crates/ast-call-lang-rust" }
+
+tree-sitter = "0.24"
+clap = { version = "4", features = ["derive"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+rusqlite = { version = "0.32", features = ["bundled"] }
+ignore = "0.4"
+walkdir = "2"
+anyhow = "1"
+thiserror = "2"

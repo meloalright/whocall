@@ -1,0 +1,19 @@
+[package]
+name = "ast-call"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "A location-first semantic caller analysis CLI"
+
+[[bin]]
+name = "ast-call"
+path = "src/main.rs"
+
+[dependencies]
+ast-call-core = { workspace = true }
+ast-call-lang-rust = { workspace = true }
+clap = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+ignore = { workspace = true }
+anyhow = { workspace = true }

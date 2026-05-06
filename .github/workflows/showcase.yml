@@ -1,0 +1,81 @@
+name: Showcase
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  showcase:
+    name: Run ast-call on samples
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-action/setup@v1
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Build ast-call
+        run: cargo build --release
+
+      - name: Index sample project
+        run: |
+          cd samples/rust-project
+          ../../target/release/ast-call index .
+          echo ""
+          echo "=== metadata ==="
+          cat .ast-call/metadata.json
+
+      - name: "Demo: callers of render_text (human)"
+        run: |
+          cd samples/rust-project
+          echo "$ ast-call src/text/render.rs:3"
+          ../../target/release/ast-call src/text/render.rs:3 || true
+
+      - name: "Demo: callers of render_text (JSON)"
+        run: |
+          cd samples/rust-project
+          echo "$ ast-call src/text/render.rs:3 --json"
+          ../../target/release/ast-call src/text/render.rs:3 --json || true
+
+      - name: "Demo: def - resolve definition"
+        run: |
+          cd samples/rust-project
+          echo "$ ast-call def src/main.rs:10"
+          ../../target/release/ast-call def src/main.rs:10 || true
+
+      - name: "Demo: refs - find references"
+        run: |
+          cd samples/rust-project
+          echo "$ ast-call refs src/text/render.rs:3"
+          ../../target/release/ast-call refs src/text/render.rs:3 || true
+
+      - name: "Demo: impl - trait implementations"
+        run: |
+          cd samples/rust-project
+          echo "$ ast-call impl src/traits.rs:5"
+          ../../target/release/ast-call impl src/traits.rs:5 || true
+
+      - name: "Demo: impact analysis"
+        run: |
+          cd samples/rust-project
+          echo "$ ast-call impact src/text/render.rs:3 --depth 2"
+          ../../target/release/ast-call impact src/text/render.rs:3 --depth 2 || true
+
+      - name: "Demo: quickfix format"
+        run: |
+          cd samples/rust-project
+          echo "$ ast-call src/text/render.rs:3 --format quickfix"
+          ../../target/release/ast-call src/text/render.rs:3 --format quickfix || true
+
+      - name: "Demo: explain mode"
+        run: |
+          cd samples/rust-project
+          echo "$ ast-call src/text/render.rs:3 --json --why"
+          ../../target/release/ast-call src/text/render.rs:3 --json --why || true

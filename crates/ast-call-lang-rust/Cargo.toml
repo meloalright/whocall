@@ -1,0 +1,12 @@
+[package]
+name = "ast-call-lang-rust"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Rust language support for ast-call"
+
+[dependencies]
+ast-call-core = { workspace = true }
+tree-sitter = { workspace = true }
+tree-sitter-rust = "0.23"
+anyhow = { workspace = true }
