@@ -218,8 +218,7 @@ impl RustParser {
 
     fn extract_use(&self, node: Node, source: &[u8], file_id: i64, imports: &mut Vec<Import>) {
         if let Some(arg) = node.child_by_field_name("argument") {
-            let full_path = node_text(arg, source);
-            self.extract_use_path(arg, source, file_id, full_path, imports);
+            self.extract_use_path(arg, source, file_id, "", imports);
         }
     }
 
@@ -228,14 +227,15 @@ impl RustParser {
         node: Node,
         source: &[u8],
         file_id: i64,
-        _path_prefix: &str,
+        path_prefix: &str,
         imports: &mut Vec<Import>,
     ) {
         match node.kind() {
             "use_as_clause" => {
                 let path_node = node.child_by_field_name("path").unwrap_or(node);
                 let alias_node = node.child_by_field_name("alias");
-                let qualified = node_text(path_node, source).to_string();
+                let raw = node_text(path_node, source);
+                let qualified = prepend_prefix(path_prefix, raw);
                 let local_name = alias_node
                     .map(|n| node_text(n, source).to_string())
                     .unwrap_or_else(|| {
@@ -257,19 +257,30 @@ impl RustParser {
                 });
             }
             "scoped_use_list" => {
-                let mut cursor = node.walk();
-                for child in node.children(&mut cursor) {
-                    self.extract_use_path(child, source, file_id, _path_prefix, imports);
+                // Extract prefix path from the scoped_use_list's path child
+                let prefix = node
+                    .child_by_field_name("path")
+                    .map(|p| {
+                        let raw = node_text(p, source);
+                        prepend_prefix(path_prefix, raw)
+                    })
+                    .unwrap_or_else(|| path_prefix.to_string());
+                if let Some(list) = node.child_by_field_name("list") {
+                    let mut cursor = list.walk();
+                    for child in list.children(&mut cursor) {
+                        self.extract_use_path(child, source, file_id, &prefix, imports);
+                    }
                 }
             }
             "use_list" => {
                 let mut cursor = node.walk();
                 for child in node.children(&mut cursor) {
-                    self.extract_use_path(child, source, file_id, _path_prefix, imports);
+                    self.extract_use_path(child, source, file_id, path_prefix, imports);
                 }
             }
             "scoped_identifier" | "identifier" => {
-                let qualified = node_text(node, source).to_string();
+                let raw = node_text(node, source);
+                let qualified = prepend_prefix(path_prefix, raw);
                 let local_name = qualified
                     .rsplit("::")
                     .next()
@@ -288,7 +299,7 @@ impl RustParser {
             _ => {
                 let mut cursor = node.walk();
                 for child in node.children(&mut cursor) {
-                    self.extract_use_path(child, source, file_id, _path_prefix, imports);
+                    self.extract_use_path(child, source, file_id, path_prefix, imports);
                 }
             }
         }
@@ -360,8 +371,14 @@ impl LanguageParser for RustParser {
         let tree = Self::parse_source(source)?;
         let root = tree.root_node();
 
+        let file_entry = index.find_file_by_id(file_id)?;
+        let module_path = file_entry
+            .as_ref()
+            .map(|f| derive_module_path(&f.path))
+            .unwrap_or_default();
+
         let mut symbols = Vec::new();
-        self.extract_symbols(root, source, file_id, "", &mut symbols);
+        self.extract_symbols(root, source, file_id, &module_path, &mut symbols);
 
         let mut stored_symbols = Vec::new();
         for mut sym in symbols {
@@ -430,6 +447,38 @@ fn extract_visibility(node: Node, source: &[u8]) -> Visibility {
         }
     }
     Visibility::Private
+}
+
+fn prepend_prefix(prefix: &str, name: &str) -> String {
+    if prefix.is_empty() {
+        name.to_string()
+    } else {
+        format!("{prefix}::{name}")
+    }
+}
+
+/// Derive the Rust module path from a file's relative path.
+/// e.g. "src/text/render.rs" → "text::render"
+///      "src/main.rs"        → ""
+///      "src/text/mod.rs"    → "text"
+fn derive_module_path(file_path: &str) -> String {
+    let mut path = file_path;
+    // Strip common source prefixes
+    for prefix in &["src/", "lib/", "tests/"] {
+        if let Some(rest) = path.strip_prefix(prefix) {
+            path = rest;
+            break;
+        }
+    }
+    // Strip .rs extension
+    let path = path.strip_suffix(".rs").unwrap_or(path);
+    // Strip /mod suffix
+    let path = path.strip_suffix("/mod").unwrap_or(path);
+    // Crate root files have no module path
+    if path == "main" || path == "lib" || path == "mod" {
+        return String::new();
+    }
+    path.replace('/', "::")
 }
 
 fn extract_signature(node: Node, source: &[u8]) -> String {

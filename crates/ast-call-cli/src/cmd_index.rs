@@ -5,6 +5,7 @@ use anyhow::{Context, Result};
 
 use ast_call_core::index::Index;
 use ast_call_core::lang::{detect_language, LanguageParser};
+use ast_call_core::resolve::resolve_all_calls;
 use ast_call_lang_rust::RustParser;
 
 pub struct IndexOpts {
@@ -124,6 +125,8 @@ pub fn run(opts: IndexOpts) -> Result<()> {
         }
     }
 
+    let resolved = resolve_all_calls(&index)?;
+
     index.commit()?;
 
     let elapsed = start.elapsed();
@@ -132,6 +135,7 @@ pub fn run(opts: IndexOpts) -> Result<()> {
         elapsed.as_secs_f64()
     );
     eprintln!("  {total_symbols} symbols, {total_imports} imports, {total_calls} call sites");
+    eprintln!("  {resolved} calls resolved");
 
     let metadata = serde_json::json!({
         "version": env!("CARGO_PKG_VERSION"),

@@ -369,6 +369,36 @@ impl Index {
         rows.collect::<Result<Vec<_>, _>>().map_err(Into::into)
     }
 
+    // --- Resolution helpers ---
+
+    pub fn all_file_ids(&self) -> Result<Vec<i64>> {
+        let mut stmt = self.conn.prepare("SELECT id FROM files")?;
+        let rows = stmt.query_map([], |row| row.get(0))?;
+        rows.collect::<Result<Vec<_>, _>>().map_err(Into::into)
+    }
+
+    pub fn call_refs_in_source_file(&self, source_file_id: i64) -> Result<Vec<Reference>> {
+        let mut stmt = self.conn.prepare(
+            "SELECT id, target_symbol_id, source_file_id, source_symbol_id, kind, start_line, start_col, end_line, end_col, text, confidence
+             FROM refs WHERE source_file_id = ?1 AND kind = 'call'",
+        )?;
+        let rows = stmt.query_map(params![source_file_id], row_to_ref)?;
+        rows.collect::<Result<Vec<_>, _>>().map_err(Into::into)
+    }
+
+    pub fn update_ref_target(
+        &self,
+        ref_id: i64,
+        target_symbol_id: i64,
+        confidence: f64,
+    ) -> Result<()> {
+        self.conn.execute(
+            "UPDATE refs SET target_symbol_id = ?1, confidence = ?2 WHERE id = ?3",
+            params![target_symbol_id, confidence, ref_id],
+        )?;
+        Ok(())
+    }
+
     pub fn transaction(&self) -> Result<()> {
         self.conn.execute_batch("BEGIN")?;
         Ok(())
