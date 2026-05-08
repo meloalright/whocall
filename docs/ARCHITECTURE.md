@@ -1,8 +1,8 @@
-# who — Architecture
+# who-ast — Architecture
 
 ## Overview
 
-`who` is a semantic code intelligence runtime for humans and AI agents. It parses source code via tree-sitter, builds a symbol/call index in SQLite, and answers semantic questions like "who calls this function?" and "who implements this trait?"
+`who-ast` is a semantic code intelligence runtime for humans and AI agents. It parses source code via tree-sitter, builds a symbol/call index in SQLite, and answers semantic questions like "who calls this function?" and "who implements this trait?"
 
 ```
 Source Files
@@ -15,7 +15,7 @@ Source Files
      |
   Target Resolution + Query
      |
-  Output (human / JSON / NDJSON / quickfix)
+  Output (human / JSON)
 ```
 
 ---
@@ -23,8 +23,8 @@ Source Files
 ## Core Binaries
 
 ```
-who-call     Find callers, definitions, references, impact — and build the index
-who-impl     Find implementations of traits/interfaces
+who-call     Find callers of a symbol — and build the index
+who-impl     Find implementations of traits/interfaces — and build the index
 ```
 
 ### Usage
@@ -34,11 +34,8 @@ who-call index .                          # build the index
 who-call render_text                      # who calls render_text?
 who-call src/ui/button.rs:42              # who calls the function at this line?
 who-call src/ui/button.rs:42 --json       # structured output for AI agents
-who-call def src/main.rs:10               # resolve definition
-who-call refs src/text/render.rs:3        # find references
-who-call impact src/text/render.rs:3      # transitive caller chain
 who-impl Renderable                       # who implements Renderable?
-who-impl index .                          # build the index (also available here)
+who-impl index .                          # build the index
 ```
 
 ---
@@ -46,7 +43,7 @@ who-impl index .                          # build the index (also available here
 ## Workspace Layout
 
 ```
-who/
+who-ast/
 ├── Cargo.toml                          # workspace root
 ├── crates/
 │   ├── who-core/                       # data model, index, resolution engine
@@ -63,15 +60,12 @@ who/
 │   │
 │   ├── who-cli/                        # binary crate (who-call, who-impl)
 │   │   └── src/
-│   │       ├── bin_whocall.rs          # `who-call` — callers, def, refs, impact, index
-│   │       ├── bin_whoimpl.rs          # `who-impl` — impl queries, index
-│   │       ├── cmd_index.rs            # `who-call index .` / `who-impl index .`
-│   │       ├── cmd_callers.rs          # `who-call <target>`
-│   │       ├── cmd_def.rs              # `who-call def <target>`
-│   │       ├── cmd_refs.rs             # `who-call refs <target>`
-│   │       ├── cmd_impl.rs             # `who-impl <target>`
-│   │       ├── cmd_impact.rs           # `who-call impact <target>`
-│   │       └── output.rs              # human, JSON, quickfix formatters
+│   │       ├── bin_whocall.rs          # `who-call` — caller queries + index
+│   │       ├── bin_whoimpl.rs          # `who-impl` — impl queries + index
+│   │       ├── cmd_index.rs            # index subcommand
+│   │       ├── cmd_callers.rs          # caller resolution
+│   │       ├── cmd_impl.rs             # impl resolution
+│   │       └── output.rs              # human + JSON formatters
 │   │
 │   └── who-lang-rust/                  # Rust language support
 │       └── src/
@@ -201,6 +195,6 @@ gh release download --repo meloalright/who-ast --pattern 'who-*.tar.gz'
 
 1. **Semantic-first** — resolve to meaning, not syntax shape
 2. **Incremental by default** — hash-based re-indexing avoids reparsing unchanged files
-3. **AI-agent native** — structured output with confidence scoring
+3. **AI-agent native** — structured JSON output with confidence scoring
 4. **Multi-language architecture** — pluggable `LanguageParser` trait per language
 5. **Unix-like UX** — minimal, composable, scriptable CLI commands
