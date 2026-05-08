@@ -1,8 +1,10 @@
+mod base_trait;
 mod text;
 mod traits;
 
 use text::render::render_text;
-use traits::{GpuRenderer, Renderer, TextRenderer};
+use base_trait::Renderer;
+use traits::{GpuRenderer, TextRenderer};
 
 fn main() {
     let mut ctx = RenderCtx::new(80, 24);

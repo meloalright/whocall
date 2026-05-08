@@ -1,10 +1,6 @@
 use crate::RenderCtx;
+use crate::base_trait::Renderer;
 use crate::text::render::{render_block, render_text};
-
-pub trait Renderer {
-    fn render(&self, ctx: &RenderCtx);
-    fn name(&self) -> &str;
-}
 
 pub struct TextRenderer;
 
