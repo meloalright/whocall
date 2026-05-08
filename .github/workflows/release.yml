@@ -84,11 +84,13 @@ jobs:
           echo "VERSION_NUM=$VERSION_NUM" >> "$GITHUB_ENV"
           echo "VERSION_TAG=$VERSION" >> "$GITHUB_ENV"
 
-      - name: Generate formula
+      - name: Generate formulas
         run: |
-          cat > ast-who.rb << FORMULA
-          class AstWho < Formula
-            desc "Semantic code intelligence for humans and AI agents"
+          for entry in "ast-call:AstCall:who-call:Semantic code intelligence — find callers of a symbol" "ast-impl:AstImpl:who-impl:Semantic code intelligence — find implementations of traits and interfaces"; do
+            IFS=':' read -r FORMULA_NAME CLASS_NAME BIN_NAME DESC <<< "$entry"
+            cat > "${FORMULA_NAME}.rb" << FORMULA
+          class ${CLASS_NAME} < Formula
+            desc "${DESC}"
             homepage "https://github.com/meloalright/who-ast"
             version "${VERSION_NUM}"
             license "MIT"
@@ -114,18 +116,17 @@ jobs:
             end
 
             def install
-              bin.install "who-call"
-              bin.install "who-impl"
+              bin.install "${BIN_NAME}"
             end
 
             test do
-              assert_match "who-call", shell_output("#{bin}/who-call --version")
+              assert_match "${BIN_NAME}", shell_output("#{bin}/${BIN_NAME} --version")
             end
           end
           FORMULA
-
-          echo "=== ast-who.rb ==="
-          cat ast-who.rb
+            echo "=== ${FORMULA_NAME}.rb ==="
+            cat "${FORMULA_NAME}.rb"
+          done
 
       - name: Push to homebrew-tap
         env:
@@ -133,11 +134,12 @@ jobs:
         run: |
           git clone https://x-access-token:${TAP_TOKEN}@github.com/meloalright/homebrew-tap.git tap
           mkdir -p tap/Formula
-          cp ast-who.rb tap/Formula/ast-who.rb
+          cp ast-call.rb tap/Formula/ast-call.rb
+          cp ast-impl.rb tap/Formula/ast-impl.rb
           cd tap
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add Formula/ast-who.rb
+          git add Formula/ast-call.rb Formula/ast-impl.rb
           git diff --cached --quiet && echo "No changes" && exit 0
-          git commit -m "Update ast-who to $VERSION_NUM"
+          git commit -m "Update ast-call and ast-impl to $VERSION_NUM"
           git push
