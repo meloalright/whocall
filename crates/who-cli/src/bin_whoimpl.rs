@@ -13,7 +13,7 @@ use who_core::error::ExitCode;
 
 #[derive(Parser)]
 #[command(
-    name = "who-impl",
+    name = "whoimpl",
     version,
     about = "Semantic code intelligence — find implementations of traits and interfaces"
 )]
@@ -89,8 +89,8 @@ fn main() {
             if let Some(target) = cli.target {
                 cmd_impl::run(&target, &output_opts)
             } else {
-                eprintln!("Usage: who-impl <target> or who-impl index <path>");
-                eprintln!("Run 'who-impl --help' for more information.");
+                eprintln!("Usage: whoimpl <target> or whoimpl index <path>");
+                eprintln!("Run 'whoimpl --help' for more information.");
                 process::exit(ExitCode::ParseError.code());
             }
         }

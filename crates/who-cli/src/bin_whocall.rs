@@ -10,7 +10,7 @@ use who_core::error::ExitCode;
 
 #[derive(Parser)]
 #[command(
-    name = "who-call",
+    name = "whocall",
     version,
     about = "Semantic code intelligence — find callers of a symbol"
 )]
@@ -80,8 +80,8 @@ fn main() {
             if let Some(target) = cli.target {
                 cmd_callers::run(&target, &output_opts)
             } else {
-                eprintln!("Usage: who-call <target> or who-call index <path>");
-                eprintln!("Run 'who-call --help' for more information.");
+                eprintln!("Usage: whocall <target> or whocall index <path>");
+                eprintln!("Run 'whocall --help' for more information.");
                 process::exit(ExitCode::ParseError.code());
             }
         }

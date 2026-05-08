@@ -50,7 +50,7 @@ jobs:
         shell: bash
         run: |
           cd target/${{ matrix.target }}/release
-          tar czf ../../../who-${{ matrix.target }}.tar.gz who-call who-impl
+          tar czf ../../../who-${{ matrix.target }}.tar.gz whocall whoimpl
           cd ../../..
 
       - name: Upload to release
@@ -86,7 +86,7 @@ jobs:
 
       - name: Generate formulas
         run: |
-          for entry in "who-call:WhoCall:who-call:Semantic code intelligence — find callers of a symbol" "who-impl:WhoImpl:who-impl:Semantic code intelligence — find implementations of traits and interfaces"; do
+          for entry in "whocall:WhoCall:whocall:Semantic code intelligence — find callers of a symbol" "whoimpl:WhoImpl:whoimpl:Semantic code intelligence — find implementations of traits and interfaces"; do
             IFS=':' read -r FORMULA_NAME CLASS_NAME BIN_NAME DESC <<< "$entry"
             cat > "${FORMULA_NAME}.rb" << FORMULA
           class ${CLASS_NAME} < Formula
@@ -134,12 +134,12 @@ jobs:
         run: |
           git clone https://x-access-token:${TAP_TOKEN}@github.com/meloalright/homebrew-tap.git tap
           mkdir -p tap/Formula
-          cp who-call.rb tap/Formula/who-call.rb
-          cp who-impl.rb tap/Formula/who-impl.rb
+          cp whocall.rb tap/Formula/whocall.rb
+          cp whoimpl.rb tap/Formula/whoimpl.rb
           cd tap
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add Formula/who-call.rb Formula/who-impl.rb
+          git add Formula/whocall.rb Formula/whoimpl.rb
           git diff --cached --quiet && echo "No changes" && exit 0
-          git commit -m "Update who-call and who-impl to $VERSION_NUM"
+          git commit -m "Update whocall and whoimpl to $VERSION_NUM"
           git push

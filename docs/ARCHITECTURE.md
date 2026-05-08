@@ -23,19 +23,19 @@ Source Files
 ## Core Binaries
 
 ```
-who-call     Find callers of a symbol — and build the index
-who-impl     Find implementations of traits/interfaces — and build the index
+whocall     Find callers of a symbol — and build the index
+whoimpl     Find implementations of traits/interfaces — and build the index
 ```
 
 ### Usage
 
 ```bash
-who-call index .                          # build the index
-who-call render_text                      # who calls render_text?
-who-call src/ui/button.rs:42              # who calls the function at this line?
-who-call src/ui/button.rs:42 --json       # structured output for AI agents
-who-impl Renderable                       # who implements Renderable?
-who-impl index .                          # build the index
+whocall index .                          # build the index
+whocall render_text                      # who calls render_text?
+whocall src/ui/button.rs:42              # who calls the function at this line?
+whocall src/ui/button.rs:42 --json       # structured output for AI agents
+whoimpl Renderable                       # who implements Renderable?
+whoimpl index .                          # build the index
 ```
 
 ---
@@ -58,10 +58,10 @@ who-ast/
 │   │       ├── lang.rs                 # LanguageParser trait, detect_language()
 │   │       └── error.rs               # WhoError, ExitCode
 │   │
-│   ├── who-cli/                        # binary crate (who-call, who-impl)
+│   ├── who-cli/                        # binary crate (whocall, whoimpl)
 │   │   └── src/
-│   │       ├── bin_whocall.rs          # `who-call` — caller queries + index
-│   │       ├── bin_whoimpl.rs          # `who-impl` — impl queries + index
+│   │       ├── bin_whocall.rs          # `whocall` — caller queries + index
+│   │       ├── bin_whoimpl.rs          # `whoimpl` — impl queries + index
 │   │       ├── cmd_index.rs            # index subcommand
 │   │       ├── cmd_callers.rs          # caller resolution
 │   │       ├── cmd_impl.rs             # impl resolution
@@ -168,7 +168,7 @@ Triggered on GitHub release publish:
      │   ├─ x86_64-unknown-linux-gnu (Linux x86_64, native)
      │   └─ aarch64-unknown-linux-gnu (Linux ARM, cross)
      │
-     ├─ Package who-call + who-impl as who-<target>.tar.gz
+     ├─ Package whocall + whoimpl as who-<target>.tar.gz
      │
      ├─ Upload to GitHub release assets
      │

@@ -27,33 +27,33 @@ jobs:
       - name: Index sample project
         run: |
           cd samples/rust-project
-          ../../target/release/who-call index .
+          ../../target/release/whocall index .
           echo ""
           echo "=== metadata ==="
           cat .who-ast/metadata.json
 
-      - name: "Demo: who-call (human)"
+      - name: "Demo: whocall (human)"
         run: |
           cd samples/rust-project
-          echo "$ who-call src/text/render.rs:3"
-          ../../target/release/who-call src/text/render.rs:3 || true
+          echo "$ whocall src/text/render.rs:3"
+          ../../target/release/whocall src/text/render.rs:3 || true
 
-      - name: "Demo: who-call (JSON)"
+      - name: "Demo: whocall (JSON)"
         run: |
           cd samples/rust-project
-          echo "$ who-call src/text/render.rs:3 --json"
-          ../../target/release/who-call src/text/render.rs:3 --json || true
+          echo "$ whocall src/text/render.rs:3 --json"
+          ../../target/release/whocall src/text/render.rs:3 --json || true
 
-      - name: "Demo: who-impl"
+      - name: "Demo: whoimpl"
         run: |
           cd samples/rust-project
-          echo "$ who-impl src/traits.rs:5"
-          ../../target/release/who-impl src/traits.rs:5 || true
+          echo "$ whoimpl src/traits.rs:5"
+          ../../target/release/whoimpl src/traits.rs:5 || true
 
       - name: "Edge case: comments should not appear as callers"
         run: |
           cd samples/rust-project
-          OUTPUT=$(../../target/release/who-call src/text/render.rs:3 --json || true)
+          OUTPUT=$(../../target/release/whocall src/text/render.rs:3 --json || true)
           echo "$OUTPUT"
           if echo "$OUTPUT" | grep -q "commented_out_call"; then
             echo "::error::FAIL: commented_out_call appeared as a caller"
@@ -64,7 +64,7 @@ jobs:
       - name: "Edge case: same-name fn should not appear as caller"
         run: |
           cd samples/rust-project
-          OUTPUT=$(../../target/release/who-call src/text/render.rs:3 --json || true)
+          OUTPUT=$(../../target/release/whocall src/text/render.rs:3 --json || true)
           echo "$OUTPUT"
           if echo "$OUTPUT" | grep -q "calls_local_render_text"; then
             echo "::error::FAIL: calls_local_render_text appeared as a caller"
