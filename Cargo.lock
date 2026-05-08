@@ -549,7 +549,7 @@ dependencies = [
 
 [[package]]
 name = "who-cli"
-version = "0.0.5"
+version = "0.0.7"
 dependencies = [
  "anyhow",
  "clap",
@@ -563,7 +563,7 @@ dependencies = [
 
 [[package]]
 name = "who-core"
-version = "0.0.5"
+version = "0.0.7"
 dependencies = [
  "anyhow",
  "ignore",
@@ -571,12 +571,11 @@ dependencies = [
  "serde",
  "serde_json",
  "thiserror",
- "walkdir",
 ]
 
 [[package]]
 name = "who-lang-python"
-version = "0.0.5"
+version = "0.0.7"
 dependencies = [
  "anyhow",
  "tree-sitter",
@@ -586,7 +585,7 @@ dependencies = [
 
 [[package]]
 name = "who-lang-rust"
-version = "0.0.5"
+version = "0.0.7"
 dependencies = [
  "anyhow",
  "tree-sitter",
