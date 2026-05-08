@@ -2,18 +2,18 @@ use std::collections::HashSet;
 
 use anyhow::Result;
 
-use ast_call_core::error::AstCallError;
-use ast_call_core::index::Index;
-use ast_call_core::resolve::{find_callers, resolve_target};
-use ast_call_core::symbol::Symbol;
-use ast_call_core::target::Target;
+use who_core::error::WhoError;
+use who_core::index::Index;
+use who_core::resolve::{find_callers, resolve_target};
+use who_core::symbol::Symbol;
+use who_core::target::Target;
 
 use crate::output::OutputOpts;
 
 pub fn run(target_str: &str, depth: u32, _tests: bool, opts: &OutputOpts) -> Result<()> {
     let target: Target = target_str
         .parse()
-        .map_err(|e: String| AstCallError::ParseError(e))?;
+        .map_err(|e: String| WhoError::ParseError(e))?;
 
     let index_path = crate::cmd_callers::find_index_path()?;
     let index = Index::open(&index_path)?;

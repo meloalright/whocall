@@ -1,9 +1,9 @@
 [package]
-name = "ast-call-core"
+name = "who-core"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
-description = "Core library for ast-call semantic caller analysis"
+description = "Core library for who — semantic code intelligence"
 
 [dependencies]
 serde = { workspace = true }

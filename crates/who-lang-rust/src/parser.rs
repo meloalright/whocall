@@ -1,8 +1,8 @@
 use anyhow::{Context, Result};
-use ast_call_core::index::Index;
-use ast_call_core::lang::{LanguageParser, ParsedFile};
-use ast_call_core::refs::{RefKind, Reference};
-use ast_call_core::symbol::{Import, SourceRange, Symbol, SymbolKind, Visibility};
+use who_core::index::Index;
+use who_core::lang::{LanguageParser, ParsedFile};
+use who_core::refs::{RefKind, Reference};
+use who_core::symbol::{Import, SourceRange, Symbol, SymbolKind, Visibility};
 use tree_sitter::{Node, Parser, Tree};
 
 pub struct RustParser {

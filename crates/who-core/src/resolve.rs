@@ -35,7 +35,7 @@ fn resolve_file_line(index: &Index, file: &str, line: u32) -> Result<ResolvedTar
             file_path: file_entry.path.clone(),
             symbol,
         }),
-        None => anyhow::bail!(crate::error::AstCallError::TargetOutsideSymbol),
+        None => anyhow::bail!(crate::error::WhoError::TargetOutsideSymbol),
     }
 }
 
@@ -51,12 +51,12 @@ fn resolve_file_symbol(index: &Index, file: &str, symbol_name: &str) -> Result<R
         .collect();
 
     match matches.len() {
-        0 => anyhow::bail!(crate::error::AstCallError::NoMatch),
+        0 => anyhow::bail!(crate::error::WhoError::NoMatch),
         1 => Ok(ResolvedTarget {
             file_path: file_entry.path.clone(),
             symbol: matches.into_iter().next().unwrap(),
         }),
-        n => anyhow::bail!(crate::error::AstCallError::AmbiguousTarget(n)),
+        n => anyhow::bail!(crate::error::WhoError::AmbiguousTarget(n)),
     }
 }
 
@@ -64,7 +64,7 @@ fn resolve_qualified(index: &Index, path: &str) -> Result<ResolvedTarget> {
     let matches = index.find_symbols_by_qualified_name(path)?;
 
     match matches.len() {
-        0 => anyhow::bail!(crate::error::AstCallError::NoMatch),
+        0 => anyhow::bail!(crate::error::WhoError::NoMatch),
         1 => {
             let symbol = matches.into_iter().next().unwrap();
             let file_entry = index
@@ -75,7 +75,7 @@ fn resolve_qualified(index: &Index, path: &str) -> Result<ResolvedTarget> {
                 symbol,
             })
         }
-        n => anyhow::bail!(crate::error::AstCallError::AmbiguousTarget(n)),
+        n => anyhow::bail!(crate::error::WhoError::AmbiguousTarget(n)),
     }
 }
 
@@ -83,7 +83,7 @@ fn resolve_plain(index: &Index, name: &str) -> Result<ResolvedTarget> {
     let matches = index.find_symbols_by_name(name)?;
 
     match matches.len() {
-        0 => anyhow::bail!(crate::error::AstCallError::NoMatch),
+        0 => anyhow::bail!(crate::error::WhoError::NoMatch),
         1 => {
             let symbol = matches.into_iter().next().unwrap();
             let file_entry = index
@@ -94,7 +94,7 @@ fn resolve_plain(index: &Index, name: &str) -> Result<ResolvedTarget> {
                 symbol,
             })
         }
-        n => anyhow::bail!(crate::error::AstCallError::AmbiguousTarget(n)),
+        n => anyhow::bail!(crate::error::WhoError::AmbiguousTarget(n)),
     }
 }
 

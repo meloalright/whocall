@@ -19,7 +19,7 @@ impl ExitCode {
 }
 
 #[derive(Debug, Error)]
-pub enum AstCallError {
+pub enum WhoError {
     #[error("no match found for target")]
     NoMatch,
 
@@ -48,7 +48,7 @@ pub enum AstCallError {
     Sqlite(#[from] rusqlite::Error),
 }
 
-impl AstCallError {
+impl WhoError {
     pub fn exit_code(&self) -> ExitCode {
         match self {
             Self::NoMatch => ExitCode::NoMatch,

@@ -7,7 +7,7 @@ use traits::{GpuRenderer, Renderer, TextRenderer};
 fn main() {
     let mut ctx = RenderCtx::new(80, 24);
 
-    render_text(&mut ctx, "Hello, ast-call!");
+    render_text(&mut ctx, "Hello, who!");
 
     let text_renderer = TextRenderer;
     text_renderer.render(&ctx);

@@ -1,16 +1,16 @@
 use anyhow::Result;
 
-use ast_call_core::error::AstCallError;
-use ast_call_core::index::Index;
-use ast_call_core::resolve::{find_callers, resolve_target};
-use ast_call_core::target::Target;
+use who_core::error::WhoError;
+use who_core::index::Index;
+use who_core::resolve::{find_callers, resolve_target};
+use who_core::target::Target;
 
 use crate::output::{self, OutputOpts};
 
 pub fn run(target_str: &str, opts: &OutputOpts) -> Result<()> {
     let target: Target = target_str
         .parse()
-        .map_err(|e: String| AstCallError::ParseError(e))?;
+        .map_err(|e: String| WhoError::ParseError(e))?;
 
     let index_path = find_index_path()?;
     let index = Index::open(&index_path)?;
@@ -39,14 +39,14 @@ pub fn find_index_path() -> Result<std::path::PathBuf> {
     let cwd = std::env::current_dir()?;
     let mut dir = cwd.as_path();
     loop {
-        let candidate = dir.join(".ast-call/index.sqlite");
+        let candidate = dir.join(".who/index.sqlite");
         if candidate.exists() {
             return Ok(candidate);
         }
         match dir.parent() {
             Some(parent) => dir = parent,
             None => {
-                return Err(AstCallError::IndexMissing(cwd.to_string_lossy().to_string()).into())
+                return Err(WhoError::IndexMissing(cwd.to_string_lossy().to_string()).into())
             }
         }
     }

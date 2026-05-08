@@ -80,42 +80,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7f202df86484c868dbad7eaa557ef785d5c66295e41b460ef922eca0723b842c"
 
 [[package]]
-name = "ast-call"
-version = "0.0.1"
-dependencies = [
- "anyhow",
- "ast-call-core",
- "ast-call-lang-rust",
- "clap",
- "ignore",
- "serde",
- "serde_json",
-]
-
-[[package]]
-name = "ast-call-core"
-version = "0.0.1"
-dependencies = [
- "anyhow",
- "ignore",
- "rusqlite",
- "serde",
- "serde_json",
- "thiserror",
- "walkdir",
-]
-
-[[package]]
-name = "ast-call-lang-rust"
-version = "0.0.1"
-dependencies = [
- "anyhow",
- "ast-call-core",
- "tree-sitter",
- "tree-sitter-rust",
-]
-
-[[package]]
 name = "bitflags"
 version = "2.11.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -571,6 +535,42 @@ checksum = "29790946404f91d9c5d06f9874efddea1dc06c5efe94541a7d6863108e3a5e4b"
 dependencies = [
  "same-file",
  "winapi-util",
+]
+
+[[package]]
+name = "who-cli"
+version = "0.0.2"
+dependencies = [
+ "anyhow",
+ "clap",
+ "ignore",
+ "serde",
+ "serde_json",
+ "who-core",
+ "who-lang-rust",
+]
+
+[[package]]
+name = "who-core"
+version = "0.0.2"
+dependencies = [
+ "anyhow",
+ "ignore",
+ "rusqlite",
+ "serde",
+ "serde_json",
+ "thiserror",
+ "walkdir",
+]
+
+[[package]]
+name = "who-lang-rust"
+version = "0.0.2"
+dependencies = [
+ "anyhow",
+ "tree-sitter",
+ "tree-sitter-rust",
+ "who-core",
 ]
 
 [[package]]

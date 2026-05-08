@@ -1,12 +1,12 @@
 [package]
-name = "ast-call-lang-rust"
+name = "who-lang-rust"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
-description = "Rust language support for ast-call"
+description = "Rust language support for who"
 
 [dependencies]
-ast-call-core = { workspace = true }
+who-core = { workspace = true }
 tree-sitter = { workspace = true }
 tree-sitter-rust = "0.23"
 anyhow = { workspace = true }

@@ -1,9 +1,9 @@
 [workspace]
 resolver = "2"
 members = [
-    "crates/ast-call-core",
-    "crates/ast-call-cli",
-    "crates/ast-call-lang-rust",
+    "crates/who-core",
+    "crates/who-cli",
+    "crates/who-lang-rust",
 ]
 
 [workspace.package]
@@ -12,8 +12,8 @@ edition = "2021"
 license = "MIT"
 
 [workspace.dependencies]
-ast-call-core = { path = "crates/ast-call-core" }
-ast-call-lang-rust = { path = "crates/ast-call-lang-rust" }
+who-core = { path = "crates/who-core" }
+who-lang-rust = { path = "crates/who-lang-rust" }
 
 tree-sitter = "0.24"
 clap = { version = "4", features = ["derive"] }

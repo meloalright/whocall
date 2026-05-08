@@ -3,10 +3,10 @@ use std::time::Instant;
 
 use anyhow::{Context, Result};
 
-use ast_call_core::index::Index;
-use ast_call_core::lang::{detect_language, LanguageParser};
-use ast_call_core::resolve::resolve_all_calls;
-use ast_call_lang_rust::RustParser;
+use who_core::index::Index;
+use who_core::lang::{detect_language, LanguageParser};
+use who_core::resolve::resolve_all_calls;
+use who_lang_rust::RustParser;
 
 pub struct IndexOpts {
     pub path: String,
@@ -23,7 +23,7 @@ pub fn run(opts: IndexOpts) -> Result<()> {
     let root = Path::new(&opts.path)
         .canonicalize()
         .context("invalid path")?;
-    let index_dir = root.join(".ast-call");
+    let index_dir = root.join(".who");
     let index_path = index_dir.join("index.sqlite");
 
     let index = if opts.clean && index_path.exists() {

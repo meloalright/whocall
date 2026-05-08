@@ -10,13 +10,13 @@ use std::process;
 
 use clap::{Parser, Subcommand};
 
-use ast_call_core::error::ExitCode;
+use who_core::error::ExitCode;
 
 #[derive(Parser)]
 #[command(
-    name = "ast-call",
+    name = "who",
     version,
-    about = "A location-first semantic caller analysis CLI"
+    about = "Semantic code intelligence for humans and AI agents"
 )]
 struct Cli {
     #[command(subcommand)]
@@ -46,7 +46,7 @@ struct Cli {
 #[derive(Subcommand)]
 enum Commands {
     /// Find callers of a function at a source location
-    Callers {
+    Call {
         /// Target location
         target: String,
     },
@@ -128,7 +128,7 @@ fn main() {
             include,
             exclude,
         }),
-        Some(Commands::Callers { target }) => cmd_callers::run(&target, &output_opts),
+        Some(Commands::Call { target }) => cmd_callers::run(&target, &output_opts),
         Some(Commands::Def { target }) => cmd_def::run(&target, &output_opts),
         Some(Commands::Refs { target }) => cmd_refs::run(&target, &output_opts),
         Some(Commands::Impl { target }) => cmd_impl::run(&target, &output_opts),
@@ -141,8 +141,8 @@ fn main() {
             if let Some(target) = cli.target {
                 cmd_callers::run(&target, &output_opts)
             } else {
-                eprintln!("Usage: ast-call <target> or ast-call <command> <target>");
-                eprintln!("Run 'ast-call --help' for more information.");
+                eprintln!("Usage: who <target> or whocall <target> or whoimpl <target>");
+                eprintln!("Run 'who --help' for more information.");
                 process::exit(ExitCode::ParseError.code());
             }
         }
@@ -151,7 +151,7 @@ fn main() {
     if let Err(e) = result {
         eprintln!("error: {e:#}");
         let code = e
-            .downcast_ref::<ast_call_core::error::AstCallError>()
+            .downcast_ref::<who_core::error::WhoError>()
             .map(|e| e.exit_code().code())
             .unwrap_or(ExitCode::InternalError.code());
         process::exit(code);
