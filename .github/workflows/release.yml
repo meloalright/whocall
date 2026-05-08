@@ -84,19 +84,11 @@ jobs:
           echo "VERSION_NUM=$VERSION_NUM" >> "$GITHUB_ENV"
           echo "VERSION_TAG=$VERSION" >> "$GITHUB_ENV"
 
-      - name: Generate formulas
+      - name: Generate formula
         run: |
-          for bin in who-call who-impl; do
-            CLASS_NAME=$(echo "$bin" | sed 's/-/ /g' | awk '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) substr($i,2)}1' | tr -d ' ')
-            if [ "$bin" = "who-call" ]; then
-              DESC="Semantic code intelligence — find callers of a symbol"
-            else
-              DESC="Semantic code intelligence — find implementations of traits and interfaces"
-            fi
-
-            cat > "${bin}.rb" << FORMULA
-          class ${CLASS_NAME} < Formula
-            desc "${DESC}"
+          cat > ast-who.rb << FORMULA
+          class AstWho < Formula
+            desc "Semantic code intelligence for humans and AI agents"
             homepage "https://github.com/meloalright/who-ast"
             version "${VERSION_NUM}"
             license "MIT"
@@ -122,18 +114,18 @@ jobs:
             end
 
             def install
-              bin.install "${bin}"
+              bin.install "who-call"
+              bin.install "who-impl"
             end
 
             test do
-              assert_match "${bin}", shell_output("#{bin}/${bin} --version")
+              assert_match "who-call", shell_output("#{bin}/who-call --version")
             end
           end
           FORMULA
 
-            echo "=== ${bin}.rb ==="
-            cat "${bin}.rb"
-          done
+          echo "=== ast-who.rb ==="
+          cat ast-who.rb
 
       - name: Push to homebrew-tap
         env:
@@ -141,12 +133,11 @@ jobs:
         run: |
           git clone https://x-access-token:${TAP_TOKEN}@github.com/meloalright/homebrew-tap.git tap
           mkdir -p tap/Formula
-          cp who-call.rb tap/Formula/who-call.rb
-          cp who-impl.rb tap/Formula/who-impl.rb
+          cp ast-who.rb tap/Formula/ast-who.rb
           cd tap
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add Formula/who-call.rb Formula/who-impl.rb
+          git add Formula/ast-who.rb
           git diff --cached --quiet && echo "No changes" && exit 0
-          git commit -m "Update who-call and who-impl to $VERSION_NUM"
+          git commit -m "Update ast-who to $VERSION_NUM"
           git push
