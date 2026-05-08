@@ -61,3 +61,25 @@ jobs:
           cd samples/python-project
           echo "$ whoimpl src/models.py:5 --json"
           ../../target/release/whoimpl src/models.py:5 --json || true
+
+      - name: "Edge case: comments should not appear as callers"
+        run: |
+          cd samples/python-project
+          OUTPUT=$(../../target/release/whocall src/utils.py:1 --json || true)
+          echo "$OUTPUT"
+          if echo "$OUTPUT" | grep -q "commented_out_call"; then
+            echo "::error::FAIL: commented_out_call appeared as a caller"
+            exit 1
+          fi
+          echo "PASS: commented_out_call correctly excluded"
+
+      - name: "Edge case: same-name fn should not appear as caller"
+        run: |
+          cd samples/python-project
+          OUTPUT=$(../../target/release/whocall src/utils.py:1 --json || true)
+          echo "$OUTPUT"
+          if echo "$OUTPUT" | grep -q "calls_local_render_text"; then
+            echo "::error::FAIL: calls_local_render_text appeared as a caller"
+            exit 1
+          fi
+          echo "PASS: calls_local_render_text correctly excluded"
