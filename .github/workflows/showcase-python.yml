@@ -62,6 +62,12 @@ jobs:
           echo "$ whoimpl src/models.py:5 --json"
           ../../target/release/whoimpl src/models.py:5 --json || true
 
+      - name: "Demo: whoimpl file#symbol"
+        run: |
+          cd samples/python-project
+          echo "$ whoimpl src/models.py#greet"
+          ../../target/release/whoimpl src/models.py#greet || true
+
       - name: "Edge case: comments should not appear as callers"
         run: |
           cd samples/python-project
