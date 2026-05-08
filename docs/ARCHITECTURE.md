@@ -27,15 +27,24 @@ whocall     Find callers of a symbol — and build the index
 whoimpl     Find implementations of traits/interfaces — and build the index
 ```
 
+### Target Formats
+
+Two ways to specify a target:
+
+```
+file:line          src/render.rs:42
+file#symbol        src/render.rs#render_text
+```
+
 ### Usage
 
 ```bash
 whocall index .                          # build the index
-whocall src/ui/button.rs:42              # who calls the function at this line?
-whocall src/ui/button.rs:42 --json       # structured output for AI agents
-whocall src/ui/button.rs#render_text     # who calls render_text in this file?
-whoimpl src/traits.rs:5                  # who implements the trait at this line?
-whoimpl src/traits.rs#Renderable         # who implements Renderable?
+whocall src/render.rs:3                  # who calls the function at this line?
+whocall src/render.rs:3 --json           # structured output for AI agents
+whocall src/render.rs#render_text        # who calls render_text in this file?
+whoimpl src/base_trait.rs:4              # who implements the trait at this line?
+whoimpl src/base_trait.rs#render         # who implements render?
 whoimpl index .                          # build the index
 ```
 
@@ -68,17 +77,24 @@ who-ast/
 │   │       ├── cmd_impl.rs             # impl resolution
 │   │       └── output.rs              # human + JSON formatters
 │   │
-│   └── who-lang-rust/                  # Rust language support
+│   ├── who-lang-rust/                  # Rust language support
+│   │   └── src/
+│   │       ├── lib.rs
+│   │       └── parser.rs              # tree-sitter Rust extraction
+│   │
+│   └── who-lang-python/                # Python language support
 │       └── src/
 │           ├── lib.rs
-│           └── parser.rs              # tree-sitter Rust extraction
+│           └── parser.rs              # tree-sitter Python extraction
 │
 ├── samples/
-│   └── rust-project/                   # sample codebase for demos
+│   ├── rust-project/                   # Rust sample codebase for demos
+│   └── python-project/                 # Python sample codebase for demos
 │
 └── .github/workflows/
     ├── ci.yml                          # build, test, clippy, fmt
-    ├── showcase.yml                    # index + query the sample project
+    ├── showcase-rust.yml               # Rust sample demos + edge cases
+    ├── showcase-python.yml             # Python sample demos + edge cases
     └── release.yml                     # build binaries + update Homebrew tap
 ```
 
@@ -96,6 +112,10 @@ who-cli
 │   ├── who-core
 │   ├── tree-sitter       (AST parsing framework)
 │   └── tree-sitter-rust  (Rust grammar)
+├── who-lang-python
+│   ├── who-core
+│   ├── tree-sitter       (AST parsing framework)
+│   └── tree-sitter-python (Python grammar)
 └── clap                  (CLI argument parsing)
 ```
 
