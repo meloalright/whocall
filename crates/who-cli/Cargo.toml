@@ -16,6 +16,7 @@ path = "src/bin_whoimpl.rs"
 [dependencies]
 who-core = { workspace = true }
 who-lang-rust = { workspace = true }
+who-lang-python = { workspace = true }
 clap = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }

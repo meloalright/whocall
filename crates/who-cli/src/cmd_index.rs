@@ -6,6 +6,7 @@ use anyhow::{Context, Result};
 use who_core::index::Index;
 use who_core::lang::{detect_language, LanguageParser};
 use who_core::resolve::resolve_all_calls;
+use who_lang_python::PythonParser;
 use who_lang_rust::RustParser;
 
 pub struct IndexOpts {
@@ -33,7 +34,8 @@ pub fn run(opts: IndexOpts) -> Result<()> {
         Index::create(&index_path)?
     };
 
-    let parsers: Vec<Box<dyn LanguageParser>> = vec![Box::new(RustParser::new())];
+    let parsers: Vec<Box<dyn LanguageParser>> =
+        vec![Box::new(RustParser::new()), Box::new(PythonParser::new())];
 
     let mut walker = ignore::WalkBuilder::new(&root);
     walker.hidden(true);

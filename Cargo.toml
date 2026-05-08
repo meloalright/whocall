@@ -4,6 +4,7 @@ members = [
     "crates/who-core",
     "crates/who-cli",
     "crates/who-lang-rust",
+    "crates/who-lang-python",
 ]
 
 [workspace.package]
@@ -14,6 +15,7 @@ license = "MIT"
 [workspace.dependencies]
 who-core = { path = "crates/who-core" }
 who-lang-rust = { path = "crates/who-lang-rust" }
+who-lang-python = { path = "crates/who-lang-python" }
 
 tree-sitter = "0.24"
 clap = { version = "4", features = ["derive"] }

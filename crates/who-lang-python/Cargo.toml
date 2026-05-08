@@ -1,0 +1,12 @@
+[package]
+name = "who-lang-python"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Python language support for who"
+
+[dependencies]
+who-core = { workspace = true }
+tree-sitter = { workspace = true }
+tree-sitter-python = "0.23"
+anyhow = { workspace = true }
