@@ -12,10 +12,7 @@ pub struct ResolvedTarget {
 pub fn resolve_target(index: &Index, target: &Target) -> Result<ResolvedTarget> {
     match target {
         Target::FileLine { file, line } => resolve_file_line(index, file, *line),
-        Target::FileLineColumn { file, line, .. } => resolve_file_line(index, file, *line),
         Target::FileSymbol { file, symbol } => resolve_file_symbol(index, file, symbol),
-        Target::QualifiedSymbol { path } => resolve_qualified(index, path),
-        Target::PlainSymbol { name } => resolve_plain(index, name),
     }
 }
 
@@ -56,44 +53,6 @@ fn resolve_file_symbol(index: &Index, file: &str, symbol_name: &str) -> Result<R
             file_path: file_entry.path.clone(),
             symbol: matches.into_iter().next().unwrap(),
         }),
-        n => anyhow::bail!(crate::error::WhoError::AmbiguousTarget(n)),
-    }
-}
-
-fn resolve_qualified(index: &Index, path: &str) -> Result<ResolvedTarget> {
-    let matches = index.find_symbols_by_qualified_name(path)?;
-
-    match matches.len() {
-        0 => anyhow::bail!(crate::error::WhoError::NoMatch),
-        1 => {
-            let symbol = matches.into_iter().next().unwrap();
-            let file_entry = index
-                .find_file_by_id(symbol.file_id)?
-                .context("file not found for symbol")?;
-            Ok(ResolvedTarget {
-                file_path: file_entry.path.clone(),
-                symbol,
-            })
-        }
-        n => anyhow::bail!(crate::error::WhoError::AmbiguousTarget(n)),
-    }
-}
-
-fn resolve_plain(index: &Index, name: &str) -> Result<ResolvedTarget> {
-    let matches = index.find_symbols_by_name(name)?;
-
-    match matches.len() {
-        0 => anyhow::bail!(crate::error::WhoError::NoMatch),
-        1 => {
-            let symbol = matches.into_iter().next().unwrap();
-            let file_entry = index
-                .find_file_by_id(symbol.file_id)?
-                .context("file not found for symbol")?;
-            Ok(ResolvedTarget {
-                file_path: file_entry.path.clone(),
-                symbol,
-            })
-        }
         n => anyhow::bail!(crate::error::WhoError::AmbiguousTarget(n)),
     }
 }

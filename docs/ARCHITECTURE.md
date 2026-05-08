@@ -31,10 +31,11 @@ whoimpl     Find implementations of traits/interfaces — and build the index
 
 ```bash
 whocall index .                          # build the index
-whocall render_text                      # who calls render_text?
 whocall src/ui/button.rs:42              # who calls the function at this line?
 whocall src/ui/button.rs:42 --json       # structured output for AI agents
-whoimpl Renderable                       # who implements Renderable?
+whocall src/ui/button.rs#render_text     # who calls render_text in this file?
+whoimpl src/traits.rs:5                  # who implements the trait at this line?
+whoimpl src/traits.rs#Renderable         # who implements Renderable?
 whoimpl index .                          # build the index
 ```
 

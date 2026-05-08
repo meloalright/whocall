@@ -35,20 +35,20 @@ jobs:
       - name: "Demo: whocall (human)"
         run: |
           cd samples/python-project
-          echo "$ whocall render_text"
-          ../../target/release/whocall render_text || true
+          echo "$ whocall src/utils.py:1"
+          ../../target/release/whocall src/utils.py:1 || true
 
       - name: "Demo: whocall (JSON)"
         run: |
           cd samples/python-project
-          echo "$ whocall render_text --json"
-          ../../target/release/whocall render_text --json || true
+          echo "$ whocall src/utils.py:1 --json"
+          ../../target/release/whocall src/utils.py:1 --json || true
 
       - name: "Demo: whocall class method"
         run: |
           cd samples/python-project
-          echo "$ whocall src/models.py:6"
-          ../../target/release/whocall src/models.py:6 || true
+          echo "$ whocall src/models.py#greet"
+          ../../target/release/whocall src/models.py#greet || true
 
       - name: "Demo: whoimpl (human)"
         run: |

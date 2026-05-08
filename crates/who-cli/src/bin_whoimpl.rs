@@ -21,7 +21,7 @@ struct Cli {
     #[command(subcommand)]
     command: Option<Commands>,
 
-    /// Target (file:line, file:line:col, file#symbol, qualified::symbol, or plain name)
+    /// Target (file:line or file#symbol)
     #[arg(global = false)]
     target: Option<String>,
 
@@ -89,7 +89,7 @@ fn main() {
             if let Some(target) = cli.target {
                 cmd_impl::run(&target, &output_opts)
             } else {
-                eprintln!("Usage: whoimpl <target> or whoimpl index <path>");
+                eprintln!("Usage: whoimpl <file:line|file#symbol> or whoimpl index <path>");
                 eprintln!("Run 'whoimpl --help' for more information.");
                 process::exit(ExitCode::ParseError.code());
             }
