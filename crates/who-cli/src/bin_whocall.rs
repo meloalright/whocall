@@ -1,8 +1,5 @@
 mod cmd_callers;
-mod cmd_def;
-mod cmd_impact;
 mod cmd_index;
-mod cmd_refs;
 mod output;
 
 use std::process;
@@ -15,7 +12,7 @@ use who_core::error::ExitCode;
 #[command(
     name = "who-call",
     version,
-    about = "Semantic code intelligence — find callers, definitions, references, and impact"
+    about = "Semantic code intelligence — find callers of a symbol"
 )]
 struct Cli {
     #[command(subcommand)]
@@ -44,32 +41,6 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Commands {
-    /// Find callers of a function at a source location (default)
-    Call {
-        /// Target location
-        target: String,
-    },
-    /// Resolve a call site to its definition
-    Def {
-        /// Target location
-        target: String,
-    },
-    /// Find all references to a symbol
-    Refs {
-        /// Target location
-        target: String,
-    },
-    /// Find likely impact of changing a function
-    Impact {
-        /// Target location
-        target: String,
-        /// Depth of caller chain to traverse
-        #[arg(long, default_value = "2")]
-        depth: u32,
-        /// Include tests in output
-        #[arg(long)]
-        tests: bool,
-    },
     /// Build the local index
     Index {
         /// Path to index (defaults to current directory)
@@ -122,19 +93,11 @@ fn main() {
             include,
             exclude,
         }),
-        Some(Commands::Call { target }) => cmd_callers::run(&target, &output_opts),
-        Some(Commands::Def { target }) => cmd_def::run(&target, &output_opts),
-        Some(Commands::Refs { target }) => cmd_refs::run(&target, &output_opts),
-        Some(Commands::Impact {
-            target,
-            depth,
-            tests,
-        }) => cmd_impact::run(&target, depth, tests, &output_opts),
         None => {
             if let Some(target) = cli.target {
                 cmd_callers::run(&target, &output_opts)
             } else {
-                eprintln!("Usage: who-call <target> or who-call <command> <target>");
+                eprintln!("Usage: who-call <target> or who-call index <path>");
                 eprintln!("Run 'who-call --help' for more information.");
                 process::exit(ExitCode::ParseError.code());
             }
