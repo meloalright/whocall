@@ -65,8 +65,8 @@ jobs:
       - name: "Demo: whoimpl file#symbol"
         run: |
           cd samples/python-project
-          echo "$ whoimpl src/models.py#promote"
-          ../../target/release/whoimpl src/models.py#promote || true
+          echo "$ whoimpl src/base.py#speak"
+          ../../target/release/whoimpl src/base.py#speak || true
 
       - name: "Edge case: comments should not appear as callers"
         run: |

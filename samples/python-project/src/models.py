@@ -12,3 +12,13 @@ class Admin(User):
 
     def promote(self, user):
         print(f"Promoting {user.name}")
+
+
+class Dog:
+    def speak(self):
+        return "Woof"
+
+
+class Cat:
+    def speak(self):
+        return "Meow"
