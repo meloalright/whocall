@@ -86,7 +86,7 @@ jobs:
 
       - name: Generate formulas
         run: |
-          for entry in "ast-call:AstCall:who-call:Semantic code intelligence — find callers of a symbol" "ast-impl:AstImpl:who-impl:Semantic code intelligence — find implementations of traits and interfaces"; do
+          for entry in "who-call:WhoCall:who-call:Semantic code intelligence — find callers of a symbol" "who-impl:WhoImpl:who-impl:Semantic code intelligence — find implementations of traits and interfaces"; do
             IFS=':' read -r FORMULA_NAME CLASS_NAME BIN_NAME DESC <<< "$entry"
             cat > "${FORMULA_NAME}.rb" << FORMULA
           class ${CLASS_NAME} < Formula
@@ -134,12 +134,12 @@ jobs:
         run: |
           git clone https://x-access-token:${TAP_TOKEN}@github.com/meloalright/homebrew-tap.git tap
           mkdir -p tap/Formula
-          cp ast-call.rb tap/Formula/ast-call.rb
-          cp ast-impl.rb tap/Formula/ast-impl.rb
+          cp who-call.rb tap/Formula/who-call.rb
+          cp who-impl.rb tap/Formula/who-impl.rb
           cd tap
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add Formula/ast-call.rb Formula/ast-impl.rb
+          git add Formula/who-call.rb Formula/who-impl.rb
           git diff --cached --quiet && echo "No changes" && exit 0
-          git commit -m "Update ast-call and ast-impl to $VERSION_NUM"
+          git commit -m "Update who-call and who-impl to $VERSION_NUM"
           git push
