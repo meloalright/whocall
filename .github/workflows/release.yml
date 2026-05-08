@@ -86,7 +86,7 @@ jobs:
 
       - name: Generate formulas
         run: |
-          for entry in "whocall:WhoCall:whocall:Semantic code intelligence — find callers of a symbol" "whoimpl:WhoImpl:whoimpl:Semantic code intelligence — find implementations of traits and interfaces"; do
+          for entry in "whocall:Whocall:whocall:Semantic code intelligence — find callers of a symbol" "whoimpl:Whoimpl:whoimpl:Semantic code intelligence — find implementations of traits and interfaces"; do
             IFS=':' read -r FORMULA_NAME CLASS_NAME BIN_NAME DESC <<< "$entry"
             cat > "${FORMULA_NAME}.rb" << FORMULA
           class ${CLASS_NAME} < Formula
