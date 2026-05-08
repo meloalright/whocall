@@ -1,5 +1,5 @@
-mod cmd_impl;
 mod cmd_callers;
+mod cmd_impl;
 mod output;
 
 use std::process;

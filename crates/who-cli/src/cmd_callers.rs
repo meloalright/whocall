@@ -45,9 +45,7 @@ pub fn find_index_path() -> Result<std::path::PathBuf> {
         }
         match dir.parent() {
             Some(parent) => dir = parent,
-            None => {
-                return Err(WhoError::IndexMissing(cwd.to_string_lossy().to_string()).into())
-            }
+            None => return Err(WhoError::IndexMissing(cwd.to_string_lossy().to_string()).into()),
         }
     }
 }

@@ -9,11 +9,7 @@ use clap::Parser;
 use who_core::error::ExitCode;
 
 #[derive(Parser)]
-#[command(
-    name = "whocall",
-    version,
-    about = "Find semantic callers of a symbol"
-)]
+#[command(name = "whocall", version, about = "Find semantic callers of a symbol")]
 struct Cli {
     /// Target (file:line, file:line:col, file#symbol, qualified::symbol, or plain name)
     target: String,

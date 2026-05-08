@@ -1,7 +1,7 @@
+use serde::Serialize;
 use who_core::confidence::ConfidenceLabel;
 use who_core::resolve::CallerResult;
 use who_core::symbol::Symbol;
-use serde::Serialize;
 
 pub struct OutputOpts {
     pub json: bool,
