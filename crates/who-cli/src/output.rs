@@ -3,18 +3,8 @@ use who_core::confidence::ConfidenceLabel;
 use who_core::resolve::CallerResult;
 use who_core::symbol::Symbol;
 
-#[allow(dead_code)]
 pub struct OutputOpts {
     pub json: bool,
-    pub ndjson: bool,
-    pub format: Option<String>,
-    pub why: bool,
-}
-
-impl OutputOpts {
-    pub fn is_quickfix(&self) -> bool {
-        self.format.as_deref() == Some("quickfix")
-    }
 }
 
 #[derive(Serialize)]
@@ -62,8 +52,6 @@ pub struct CallerOutput {
     pub column: u32,
     pub call_expr: String,
     pub confidence: f64,
-    #[serde(skip_serializing_if = "Vec::is_empty")]
-    pub why: Vec<String>,
 }
 
 #[derive(Serialize)]
@@ -116,7 +104,6 @@ pub fn format_callers_json(
     symbol: &Symbol,
     file_path: &str,
     callers: &[CallerResult],
-    _show_why: bool,
 ) {
     let avg_conf = if callers.is_empty() {
         0.0
@@ -156,7 +143,6 @@ pub fn format_callers_json(
                 column: c.column,
                 call_expr: c.call_text.clone(),
                 confidence: c.call_edge.confidence,
-                why: Vec::new(), // TODO: populate in Phase 6 explain mode
             })
             .collect(),
         summary: SummaryOutput {
@@ -167,13 +153,4 @@ pub fn format_callers_json(
     };
 
     println!("{}", serde_json::to_string_pretty(&output).unwrap());
-}
-
-pub fn format_callers_quickfix(symbol: &Symbol, callers: &[CallerResult]) {
-    for c in callers {
-        println!(
-            "{}:{}:{}: {} calls {}",
-            c.file_path, c.line, c.column, c.caller_symbol.name, symbol.name
-        );
-    }
 }

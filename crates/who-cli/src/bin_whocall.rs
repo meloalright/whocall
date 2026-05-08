@@ -25,18 +25,6 @@ struct Cli {
     /// Output as JSON
     #[arg(long, global = true)]
     json: bool,
-
-    /// Output as NDJSON
-    #[arg(long, global = true)]
-    ndjson: bool,
-
-    /// Output in quickfix format
-    #[arg(long, value_name = "FORMAT", global = true)]
-    format: Option<String>,
-
-    /// Show explain/why information
-    #[arg(long, global = true)]
-    why: bool,
 }
 
 #[derive(Subcommand)]
@@ -69,12 +57,7 @@ enum Commands {
 fn main() {
     let cli = Cli::parse();
 
-    let output_opts = output::OutputOpts {
-        json: cli.json,
-        ndjson: cli.ndjson,
-        format: cli.format.clone(),
-        why: cli.why,
-    };
+    let output_opts = output::OutputOpts { json: cli.json };
 
     let result = match cli.command {
         Some(Commands::Index {

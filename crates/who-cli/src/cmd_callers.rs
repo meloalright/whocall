@@ -19,15 +19,7 @@ pub fn run(target_str: &str, opts: &OutputOpts) -> Result<()> {
     let callers = find_callers(&index, resolved.symbol.id)?;
 
     if opts.json {
-        output::format_callers_json(
-            target_str,
-            &resolved.symbol,
-            &resolved.file_path,
-            &callers,
-            opts.why,
-        );
-    } else if opts.is_quickfix() {
-        output::format_callers_quickfix(&resolved.symbol, &callers);
+        output::format_callers_json(target_str, &resolved.symbol, &resolved.file_path, &callers);
     } else {
         output::format_callers_human(target_str, &resolved.symbol, &resolved.file_path, &callers);
     }
