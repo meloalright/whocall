@@ -32,29 +32,23 @@ jobs:
           echo "=== metadata ==="
           cat .who-ast/metadata.json
 
-      - name: "Demo: who-call render_text (human)"
+      - name: "Demo: who-call (human)"
         run: |
           cd samples/rust-project
           echo "$ who-call src/text/render.rs:3"
           ../../target/release/who-call src/text/render.rs:3 || true
 
-      - name: "Demo: who-call render_text (JSON)"
+      - name: "Demo: who-call (JSON)"
         run: |
           cd samples/rust-project
           echo "$ who-call src/text/render.rs:3 --json"
           ../../target/release/who-call src/text/render.rs:3 --json || true
 
-      - name: "Demo: who-call def"
+      - name: "Demo: who-call (quickfix)"
         run: |
           cd samples/rust-project
-          echo "$ who-call def src/main.rs:10"
-          ../../target/release/who-call def src/main.rs:10 || true
-
-      - name: "Demo: who-call refs"
-        run: |
-          cd samples/rust-project
-          echo "$ who-call refs src/text/render.rs:3"
-          ../../target/release/who-call refs src/text/render.rs:3 || true
+          echo "$ who-call src/text/render.rs:3 --format quickfix"
+          ../../target/release/who-call src/text/render.rs:3 --format quickfix || true
 
       - name: "Demo: who-impl"
         run: |
@@ -62,30 +56,9 @@ jobs:
           echo "$ who-impl src/traits.rs:5"
           ../../target/release/who-impl src/traits.rs:5 || true
 
-      - name: "Demo: who-call impact"
-        run: |
-          cd samples/rust-project
-          echo "$ who-call impact src/text/render.rs:3 --depth 2"
-          ../../target/release/who-call impact src/text/render.rs:3 --depth 2 || true
-
-      - name: "Demo: quickfix format"
-        run: |
-          cd samples/rust-project
-          echo "$ who-call src/text/render.rs:3 --format quickfix"
-          ../../target/release/who-call src/text/render.rs:3 --format quickfix || true
-
-      - name: "Demo: explain mode"
-        run: |
-          cd samples/rust-project
-          echo "$ who-call src/text/render.rs:3 --json --why"
-          ../../target/release/who-call src/text/render.rs:3 --json --why || true
-
       - name: "Edge case: comments should not appear as callers"
         run: |
           cd samples/rust-project
-          echo "--- commented_out_call has // render_text(...) in comments ---"
-          echo "--- it must NOT appear in callers of render::render_text ---"
-          echo ""
           OUTPUT=$(../../target/release/who-call src/text/render.rs:3 --json || true)
           echo "$OUTPUT"
           if echo "$OUTPUT" | grep -q "commented_out_call"; then
@@ -94,11 +67,9 @@ jobs:
           fi
           echo "PASS: commented_out_call correctly excluded"
 
-      - name: "Edge case: same-name fn that does not call target should not appear"
+      - name: "Edge case: same-name fn should not appear as caller"
         run: |
           cd samples/rust-project
-          echo "--- calls_local_render_text calls edge_cases::render_text, not render::render_text ---"
-          echo ""
           OUTPUT=$(../../target/release/who-call src/text/render.rs:3 --json || true)
           echo "$OUTPUT"
           if echo "$OUTPUT" | grep -q "calls_local_render_text"; then
