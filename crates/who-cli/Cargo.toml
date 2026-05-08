@@ -6,15 +6,11 @@ license.workspace = true
 description = "Semantic code intelligence for humans and AI agents"
 
 [[bin]]
-name = "who"
-path = "src/main.rs"
-
-[[bin]]
-name = "whocall"
+name = "who-call"
 path = "src/bin_whocall.rs"
 
 [[bin]]
-name = "whoimpl"
+name = "who-impl"
 path = "src/bin_whoimpl.rs"
 
 [dependencies]

@@ -50,7 +50,7 @@ jobs:
         shell: bash
         run: |
           cd target/${{ matrix.target }}/release
-          tar czf ../../../who-${{ matrix.target }}.tar.gz who whocall whoimpl
+          tar czf ../../../who-${{ matrix.target }}.tar.gz who-call who-impl
           cd ../../..
 
       - name: Upload to release
@@ -114,13 +114,12 @@ jobs:
             end
 
             def install
-              bin.install "who"
-              bin.install "whocall"
-              bin.install "whoimpl"
+              bin.install "who-call"
+              bin.install "who-impl"
             end
 
             test do
-              assert_match "who", shell_output("#{bin}/who --version")
+              assert_match "who-call", shell_output("#{bin}/who-call --version")
             end
           end
           FORMULA

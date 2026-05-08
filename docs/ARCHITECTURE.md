@@ -23,22 +23,22 @@ Source Files
 ## Core Binaries
 
 ```
-who          Main CLI — indexing, def, refs, impact, and all subcommands
-whocall      Find semantic callers of a symbol
-whoimpl      Find implementations of traits/interfaces
+who-call     Find callers, definitions, references, impact — and build the index
+who-impl     Find implementations of traits/interfaces
 ```
 
 ### Usage
 
 ```bash
-who index .                           # build the index
-whocall render_text                   # who calls render_text?
-whocall src/ui/button.rs:42           # who calls the function at this line?
-whocall src/ui/button.rs:42 --json    # structured output for AI agents
-whoimpl Renderable                    # who implements Renderable?
-who def src/main.rs:10                # resolve definition
-who refs src/text/render.rs:3         # find references
-who impact src/text/render.rs:3       # transitive caller chain
+who-call index .                          # build the index
+who-call render_text                      # who calls render_text?
+who-call src/ui/button.rs:42              # who calls the function at this line?
+who-call src/ui/button.rs:42 --json       # structured output for AI agents
+who-call def src/main.rs:10               # resolve definition
+who-call refs src/text/render.rs:3        # find references
+who-call impact src/text/render.rs:3      # transitive caller chain
+who-impl Renderable                       # who implements Renderable?
+who-impl index .                          # build the index (also available here)
 ```
 
 ---
@@ -61,17 +61,16 @@ who/
 │   │       ├── lang.rs                 # LanguageParser trait, detect_language()
 │   │       └── error.rs               # WhoError, ExitCode
 │   │
-│   ├── who-cli/                        # binary crate (who, whocall, whoimpl)
+│   ├── who-cli/                        # binary crate (who-call, who-impl)
 │   │   └── src/
-│   │       ├── main.rs                 # `who` — full CLI with subcommands
-│   │       ├── bin_whocall.rs          # `whocall` — standalone caller query
-│   │       ├── bin_whoimpl.rs          # `whoimpl` — standalone impl query
-│   │       ├── cmd_index.rs            # `who index .`
-│   │       ├── cmd_callers.rs          # `who call <target>` / `whocall <target>`
-│   │       ├── cmd_def.rs              # `who def <target>`
-│   │       ├── cmd_refs.rs             # `who refs <target>`
-│   │       ├── cmd_impl.rs             # `who impl <target>` / `whoimpl <target>`
-│   │       ├── cmd_impact.rs           # `who impact <target>`
+│   │       ├── bin_whocall.rs          # `who-call` — callers, def, refs, impact, index
+│   │       ├── bin_whoimpl.rs          # `who-impl` — impl queries, index
+│   │       ├── cmd_index.rs            # `who-call index .` / `who-impl index .`
+│   │       ├── cmd_callers.rs          # `who-call <target>`
+│   │       ├── cmd_def.rs              # `who-call def <target>`
+│   │       ├── cmd_refs.rs             # `who-call refs <target>`
+│   │       ├── cmd_impl.rs             # `who-impl <target>`
+│   │       ├── cmd_impact.rs           # `who-call impact <target>`
 │   │       └── output.rs              # human, JSON, quickfix formatters
 │   │
 │   └── who-lang-rust/                  # Rust language support
@@ -175,7 +174,7 @@ Triggered on GitHub release publish:
      │   ├─ x86_64-unknown-linux-gnu (Linux x86_64, native)
      │   └─ aarch64-unknown-linux-gnu (Linux ARM, cross)
      │
-     ├─ Package who + whocall + whoimpl as who-<target>.tar.gz
+     ├─ Package who-call + who-impl as who-<target>.tar.gz
      │
      ├─ Upload to GitHub release assets
      │
