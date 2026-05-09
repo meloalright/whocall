@@ -2,7 +2,7 @@
  <img height="512" alt="preview" src="https://github.com/user-attachments/assets/b2cb72d7-f386-4b84-a9eb-8d9a99705896" />
 </div>
 
-# whocall + whoimpl
+# who-ast (whocall + whoimpl)
 
 [![CI](https://github.com/rustq/tear/actions/workflows/ci.yml/badge.svg)](https://github.com/rustq/tear/actions/workflows/ci.yml) [![license](https://img.shields.io/badge/license-MIT-cyan)](https://revolunet.mit-license.org/) 
 
@@ -44,10 +44,18 @@ brew install meloalright/tap/whoimpl
 npm install -g @whoimpl/cli
 ```
 
-### Supported Languages
 
-- [x] Rust
-- [x] Python
-- [ ] TypeScript
-- [ ] Go
-- [ ] Java
+### TODO
+
+- [x] Rust support
+- [x] Python support
+- [ ] TypeScript support
+- [ ] Go support
+- [ ] Java support
+- [ ] C support
+- [ ] C++ support
+- [ ] Swift support
+- [ ] Kotlin support
+- [ ] Dart support
+- [ ] PHP support
+- [ ] Ruby support
