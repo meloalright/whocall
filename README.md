@@ -1,3 +1,6 @@
+<img height="614" alt="whocall-preview" src="https://github.com/user-attachments/assets/9176a602-f780-4a65-b496-ebcb6188ab49" />
+
+
 # whocall + whoimpl
 
 code analysis tools applicable to both human and AI agents.
