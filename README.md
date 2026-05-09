@@ -4,39 +4,43 @@
 
 code analysis tools applicable to both human and AI agents.
 
+### whocall
+
 <img height="307" alt="whocall" src="https://github.com/user-attachments/assets/ad1cb275-5a56-4ada-9f2a-8e169fbdd2f9" />
 
 > `whocall` answers questions like **"who calls this function?"**
 
-* `install via homebrew`
+##### install via homebrew
 
 ```sh
 brew install meloalright/tap/whocall
 ```
 
-* `install via npm`
+##### install via npm
 
 ```sh
 npm install -g @whocall/cli
 ```
 
+### whoimpl
+
 <img height="307" alt="whoimpl" src="https://github.com/user-attachments/assets/86c5cf4f-ff76-46f4-9027-4a051fea59bf" />
 
 > `whoimpl` answers questions like **"who implements this trait?"**
 
-* `install via homebrew`
+##### install via homebrew
 
 ```sh
 brew install meloalright/tap/whoimpl
 ```
 
-* `install via npm`
+##### install via npm
 
 ```sh
 npm install -g @whoimpl/cli
 ```
 
-## Supported Languages
+### Supported Languages
 
 - [x] Rust
 - [x] Python
