@@ -2,6 +2,8 @@
 
 # whocall + whoimpl
 
+[![CI](https://github.com/rustq/tear/actions/workflows/ci.yml/badge.svg)](https://github.com/rustq/tear/actions/workflows/ci.yml) [![license](https://img.shields.io/badge/license-MIT-cyan)](https://revolunet.mit-license.org/) 
+
 code analysis tools applicable to both human and AI agents.
 
 ### whocall
