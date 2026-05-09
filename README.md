@@ -4,7 +4,7 @@
 
 # who-ast (whocall + whoimpl)
 
-[![CI](https://github.com/rustq/tear/actions/workflows/ci.yml/badge.svg)](https://github.com/rustq/tear/actions/workflows/ci.yml) [![license](https://img.shields.io/badge/license-MIT-cyan)](https://revolunet.mit-license.org/) 
+[![CI](https://github.com/rustq/tear/actions/workflows/ci.yml/badge.svg)](https://github.com/rustq/tear/actions/workflows/ci.yml) [![license](https://img.shields.io/badge/license-MIT-cyan)](https://revolunet.mit-license.org/) [![homebrew](https://img.shields.io/homebrew/v/whocall)](https://formulae.brew.sh/formula/whocall) [![npm](https://img.shields.io/npm/v/@whocall/cli)](https://www.npmjs.com/package/@whocall/cli)
 
 code analysis tools applicable to both human and AI agents.
 
