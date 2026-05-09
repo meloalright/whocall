@@ -62,20 +62,18 @@ pub fn find_callers(index: &Index, target_symbol_id: i64) -> Result<Vec<CallerRe
     let mut results = Vec::new();
 
     for edge in edges {
-        if let Some(caller_id) = Some(edge.caller_symbol_id) {
-            let caller_sym = index.find_symbol_by_id(caller_id)?;
-            let reference = index.find_ref_by_id(edge.ref_id)?;
-            if let (Some(sym), Some(r)) = (caller_sym, reference) {
-                let file = index.find_file_by_id(sym.file_id)?;
-                results.push(CallerResult {
-                    caller_symbol: sym,
-                    call_edge: edge,
-                    call_text: r.text,
-                    file_path: file.map(|f| f.path).unwrap_or_default(),
-                    line: r.start_line,
-                    column: r.start_col,
-                });
-            }
+        let caller_sym = index.find_symbol_by_id(edge.caller_symbol_id)?;
+        let reference = index.find_ref_by_id(edge.ref_id)?;
+        if let (Some(sym), Some(r)) = (caller_sym, reference) {
+            let file = index.find_file_by_id(sym.file_id)?;
+            results.push(CallerResult {
+                caller_symbol: sym,
+                call_edge: edge,
+                call_text: r.text,
+                file_path: file.map(|f| f.path).unwrap_or_default(),
+                line: r.start_line,
+                column: r.start_col,
+            });
         }
     }
 

@@ -14,8 +14,6 @@ pub struct IndexOpts {
     pub lang: Option<String>,
     pub clean: bool,
     pub no_gitignore: bool,
-    #[allow(dead_code)]
-    pub include: Option<String>,
     pub exclude: Option<String>,
 }
 

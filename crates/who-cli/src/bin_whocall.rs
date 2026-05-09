@@ -36,18 +36,12 @@ enum Commands {
         /// Language filter
         #[arg(long)]
         lang: Option<String>,
-        /// Watch for changes
-        #[arg(long)]
-        watch: bool,
         /// Clean and rebuild index
         #[arg(long)]
         clean: bool,
         /// Don't respect .gitignore
         #[arg(long)]
         no_gitignore: bool,
-        /// Include patterns
-        #[arg(long)]
-        include: Option<String>,
         /// Exclude patterns
         #[arg(long)]
         exclude: Option<String>,
@@ -65,15 +59,12 @@ fn main() {
             lang,
             clean,
             no_gitignore,
-            include,
             exclude,
-            ..
         }) => cmd_index::run(cmd_index::IndexOpts {
             path: path.unwrap_or_else(|| ".".to_string()),
             lang,
             clean,
             no_gitignore,
-            include,
             exclude,
         }),
         None => {

@@ -62,7 +62,7 @@ pub struct SummaryOutput {
 }
 
 pub fn format_callers_human(
-    target_input: &str,
+    _target_input: &str,
     symbol: &Symbol,
     file_path: &str,
     callers: &[CallerResult],
@@ -96,7 +96,6 @@ pub fn format_callers_human(
         println!("{} callers found.", callers.len());
         println!("Confidence: {} {:.2}", label.as_str(), avg_conf);
     }
-    let _ = target_input;
 }
 
 pub fn format_callers_json(
