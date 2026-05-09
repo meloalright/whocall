@@ -91,11 +91,23 @@ who-ast/
 │   ├── rust-project/                   # Rust sample codebase for demos
 │   └── python-project/                 # Python sample codebase for demos
 │
+├── npm/
+│   ├── whocall-cli/                    # @whocall/cli npm package
+│   │   ├── package.json
+│   │   └── install.js                 # postinstall binary downloader
+│   └── whoimpl-cli/                    # @whoimpl/cli npm package
+│       ├── package.json
+│       └── install.js                 # postinstall binary downloader
+│
+├── install-whocall.sh                  # Shell install script
+├── install-whoimpl.sh                  # Shell install script
+│
 └── .github/workflows/
     ├── ci.yml                          # build, test, clippy, fmt
     ├── showcase-rust.yml               # Rust sample demos + edge cases
     ├── showcase-python.yml             # Python sample demos + edge cases
-    └── release.yml                     # build binaries + update Homebrew tap
+    ├── release.yml                     # build binaries + update Homebrew tap
+    └── npm.yml                         # publish @whocall/cli + @whoimpl/cli to npm
 ```
 
 ### Crate Dependency Graph
@@ -196,9 +208,35 @@ Triggered on GitHub release publish:
      └─ Homebrew job: generate whocall.rb + whoimpl.rb → push to meloalright/homebrew-tap
 ```
 
+### npm Publish Pipeline (`.github/workflows/npm.yml`)
+
+Triggered on the same release event, after release assets are available:
+
+```
+ release published
+     │
+     ├─ Wait for release assets (≥4 binaries uploaded)
+     │
+     ├─ Update package.json versions to match release tag
+     │
+     ├─ Publish @whocall/cli
+     │
+     └─ Publish @whoimpl/cli
+```
+
+Each npm package is a thin wrapper — no native code bundled. On `npm install`, a `postinstall` script downloads the correct prebuilt binary from GitHub releases.
+
 ### Installation
 
 ```sh
+# npm (recommended)
+npm install -g @whocall/cli
+npm install -g @whoimpl/cli
+
+# Shell (macOS / Linux)
+curl -fsSL https://raw.githubusercontent.com/meloalright/who-ast/master/install-whocall.sh | sh
+curl -fsSL https://raw.githubusercontent.com/meloalright/who-ast/master/install-whoimpl.sh | sh
+
 # Homebrew (macOS / Linux)
 brew tap meloalright/tap
 brew install whocall
@@ -206,9 +244,6 @@ brew install whoimpl
 
 # From source
 cargo install --path crates/who-cli
-
-# From GitHub release
-gh release download --repo meloalright/who-ast --pattern 'who-*.tar.gz'
 ```
 
 ---
