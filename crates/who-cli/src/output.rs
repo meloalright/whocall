@@ -1,5 +1,4 @@
 use serde::Serialize;
-use who_core::confidence::ConfidenceLabel;
 use who_core::resolve::CallerResult;
 use who_core::symbol::Symbol;
 
@@ -51,14 +50,11 @@ pub struct CallerOutput {
     pub line: u32,
     pub column: u32,
     pub call_expr: String,
-    pub confidence: f64,
 }
 
 #[derive(Serialize)]
 pub struct SummaryOutput {
     pub caller_count: usize,
-    pub confidence: f64,
-    pub confidence_label: String,
 }
 
 pub fn format_callers_human(
@@ -89,12 +85,7 @@ pub fn format_callers_human(
             );
         }
         println!();
-
-        let avg_conf =
-            callers.iter().map(|c| c.call_edge.confidence).sum::<f64>() / callers.len() as f64;
-        let label = ConfidenceLabel::from_score(avg_conf);
         println!("{} callers found.", callers.len());
-        println!("Confidence: {} {:.2}", label.as_str(), avg_conf);
     }
 }
 
@@ -104,12 +95,6 @@ pub fn format_callers_json(
     file_path: &str,
     callers: &[CallerResult],
 ) {
-    let avg_conf = if callers.is_empty() {
-        0.0
-    } else {
-        callers.iter().map(|c| c.call_edge.confidence).sum::<f64>() / callers.len() as f64
-    };
-
     let output = CallersOutput {
         command: "callers".to_string(),
         target: TargetOutput {
@@ -141,13 +126,10 @@ pub fn format_callers_json(
                 line: c.line,
                 column: c.column,
                 call_expr: c.call_text.clone(),
-                confidence: c.call_edge.confidence,
             })
             .collect(),
         summary: SummaryOutput {
             caller_count: callers.len(),
-            confidence: avg_conf,
-            confidence_label: ConfidenceLabel::from_score(avg_conf).as_str().to_string(),
         },
     };
 
