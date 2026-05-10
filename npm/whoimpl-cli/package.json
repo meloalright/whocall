@@ -9,14 +9,15 @@
   },
   "license": "MIT",
   "bin": {
-    "whoimpl": "bin/whoimpl"
+    "whoimpl": "run.js"
   },
   "scripts": {
     "postinstall": "node install.js"
   },
   "files": [
     "bin",
-    "install.js"
+    "install.js",
+    "run.js"
   ],
   "keywords": [
     "code-intelligence",
