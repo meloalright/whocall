@@ -48,7 +48,7 @@ jobs:
         run: |
           cd samples/python-project
           whocall index .
-          whocall src/utils.py:1
+          whocall src/utils.py:6
           whocall src/utils.py#format_output
           whoimpl src/models.py:5
           whoimpl src/base.py#speak
@@ -107,7 +107,7 @@ jobs:
           export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
           cd samples/python-project
           whocall index .
-          whocall src/utils.py:1
+          whocall src/utils.py:6
           whocall src/utils.py#format_output
           whoimpl src/models.py:5
           whoimpl src/base.py#speak
@@ -160,7 +160,7 @@ jobs:
         run: |
           cd samples/python-project
           whocall index .
-          whocall src/utils.py:1
+          whocall src/utils.py:6
           whocall src/utils.py#format_output
           whoimpl src/models.py:5
           whoimpl src/base.py#speak
@@ -207,7 +207,7 @@ jobs:
         run: |
           cd samples/python-project
           whocall index .
-          whocall src/utils.py:1
+          whocall src/utils.py:6
           whocall src/utils.py#format_output
           whoimpl src/models.py:5
           whoimpl src/base.py#speak
