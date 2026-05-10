@@ -6,7 +6,7 @@
 
 ### whocall
 
-<img alt="whocall" src="https://github.com/user-attachments/assets/ad1cb275-5a56-4ada-9f2a-8e169fbdd2f9" />
+<img alt="whocall" src="https://github.com/user-attachments/assets/bf6e263b-fe01-4586-88dd-5f60121f6357" />
 
 > `whocall` answers questions like **"who calls this function?"**
 
