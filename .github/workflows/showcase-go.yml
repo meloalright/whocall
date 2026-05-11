@@ -55,3 +55,15 @@ jobs:
           cd samples/go-project
           echo "$ whocall pkg/utils.go#RenderText"
           ../../target/release/whocall pkg/utils.go#RenderText || true
+
+      - name: "Demo: whoimpl (human)"
+        run: |
+          cd samples/go-project
+          echo "$ whoimpl pkg/animal.go:4"
+          ../../target/release/whoimpl pkg/animal.go:4 || true
+
+      - name: "Demo: whoimpl (JSON)"
+        run: |
+          cd samples/go-project
+          echo "$ whoimpl pkg/animal.go:4 --json"
+          ../../target/release/whoimpl pkg/animal.go:4 --json || true

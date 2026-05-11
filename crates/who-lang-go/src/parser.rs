@@ -51,6 +51,10 @@ impl GoParser {
                         symbols.push(sym);
                     }
                 }
+                "type_declaration" => {
+                    self.extract_interface_methods(child, source, file_id, pkg, symbols);
+                    self.extract_symbols(child, source, file_id, pkg, symbols);
+                }
                 _ => {
                     self.extract_symbols(child, source, file_id, pkg, symbols);
                 }
@@ -138,6 +142,58 @@ impl GoParser {
             signature: Some(signature),
             visibility,
         })
+    }
+
+    fn extract_interface_methods(
+        &self,
+        node: Node,
+        source: &[u8],
+        file_id: i64,
+        pkg: &str,
+        symbols: &mut Vec<Symbol>,
+    ) {
+        let mut cursor = node.walk();
+        for child in node.children(&mut cursor) {
+            if child.kind() != "type_spec" {
+                continue;
+            }
+            let iface_name = match child.child_by_field_name("name") {
+                Some(n) => node_text(n, source).to_string(),
+                None => continue,
+            };
+            let type_node = match child.child_by_field_name("type") {
+                Some(n) if n.kind() == "interface_type" => n,
+                _ => continue,
+            };
+            let mut inner = type_node.walk();
+            for member in type_node.children(&mut inner) {
+                if member.kind() != "method_elem" {
+                    continue;
+                }
+                let mut mc = member.walk();
+                for mchild in member.children(&mut mc) {
+                    if mchild.kind() == "field_identifier" {
+                        let method_name = node_text(mchild, source).to_string();
+                        let qualified_name = if pkg.is_empty() {
+                            format!("{iface_name}.{method_name}")
+                        } else {
+                            format!("{pkg}.{iface_name}.{method_name}")
+                        };
+                        let sig_text = node_text(member, source).to_string();
+                        symbols.push(Symbol {
+                            id: 0,
+                            file_id,
+                            name: method_name,
+                            qualified_name,
+                            kind: SymbolKind::TraitMethodDecl,
+                            range: node_range(member),
+                            signature: Some(sig_text),
+                            visibility: Visibility::Public,
+                        });
+                    }
+                }
+            }
+        }
     }
 
     fn extract_imports(&self, node: Node, source: &[u8], file_id: i64, imports: &mut Vec<Import>) {
@@ -482,5 +538,21 @@ mod tests {
         let mut refs = Vec::new();
         parser.extract_calls(root, source, 1, &symbols, &mut refs);
         assert!(!refs.is_empty());
+    }
+
+    #[test]
+    fn parse_interface_methods() {
+        let source = b"package pkg\n\ntype Speaker interface {\n\tSpeak() string\n}\n\nfunc (d Dog) Speak() string {\n\treturn \"Woof\"\n}\n\nfunc (c Cat) Speak() string {\n\treturn \"Meow\"\n}\n";
+        let tree = GoParser::parse_source(source).unwrap();
+        let root = tree.root_node();
+        let parser = GoParser::new();
+        let pkg = extract_package_name(root, source);
+        let mut symbols = Vec::new();
+        parser.extract_symbols(root, source, 1, &pkg, &mut symbols);
+        let decl = symbols.iter().find(|s| s.kind == SymbolKind::TraitMethodDecl);
+        assert!(decl.is_some());
+        assert_eq!(decl.unwrap().qualified_name, "pkg.Speaker.Speak");
+        let methods: Vec<_> = symbols.iter().filter(|s| s.kind == SymbolKind::Method).collect();
+        assert_eq!(methods.len(), 2);
     }
 }
