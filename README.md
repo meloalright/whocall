@@ -46,7 +46,7 @@ npm install -g @whoimpl/cli
 - [x] Rust support
 - [x] Python support
 - [ ] TypeScript support
-- [ ] Go support
+- [x] Go support
 - [ ] Java support
 - [ ] C support
 - [ ] C++ support

@@ -1,0 +1,12 @@
+[package]
+name = "who-lang-go"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Go language support for who"
+
+[dependencies]
+who-core = { workspace = true }
+tree-sitter = { workspace = true }
+tree-sitter-go = "0.23"
+anyhow = { workspace = true }
