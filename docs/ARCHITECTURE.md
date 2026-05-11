@@ -109,7 +109,7 @@ who-ast/
     ├── ci.yml                          # build, test, clippy, fmt
     ├── showcase-rust.yml               # Rust sample demos + edge cases
     ├── showcase-python.yml             # Python sample demos + edge cases
-    ├── showcase-go.yml                 # Go sample demos
+    ├── showcase-go.yml                 # Go sample demos + edge cases
     ├── release.yml                     # build binaries + update Homebrew tap
     └── npm.yml                         # publish @whocall/cli + @whoimpl/cli to npm
 ```
