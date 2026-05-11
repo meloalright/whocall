@@ -82,14 +82,20 @@ who-ast/
 │   │       ├── lib.rs
 │   │       └── parser.rs              # tree-sitter Rust extraction
 │   │
-│   └── who-lang-python/                # Python language support
+│   ├── who-lang-python/                # Python language support
+│   │   └── src/
+│   │       ├── lib.rs
+│   │       └── parser.rs              # tree-sitter Python extraction
+│   │
+│   └── who-lang-go/                    # Go language support
 │       └── src/
 │           ├── lib.rs
-│           └── parser.rs              # tree-sitter Python extraction
+│           └── parser.rs              # tree-sitter Go extraction
 │
 ├── samples/
 │   ├── rust-project/                   # Rust sample codebase for demos
-│   └── python-project/                 # Python sample codebase for demos
+│   ├── python-project/                 # Python sample codebase for demos
+│   └── go-project/                     # Go sample codebase for demos
 │
 ├── npm/
 │   ├── whocall-cli/                    # @whocall/cli npm package
@@ -103,6 +109,7 @@ who-ast/
     ├── ci.yml                          # build, test, clippy, fmt
     ├── showcase-rust.yml               # Rust sample demos + edge cases
     ├── showcase-python.yml             # Python sample demos + edge cases
+    ├── showcase-go.yml                 # Go sample demos
     ├── release.yml                     # build binaries + update Homebrew tap
     └── npm.yml                         # publish @whocall/cli + @whoimpl/cli to npm
 ```
@@ -125,6 +132,10 @@ who-cli
 │   ├── who-core
 │   ├── tree-sitter       (AST parsing framework)
 │   └── tree-sitter-python (Python grammar)
+├── who-lang-go
+│   ├── who-core
+│   ├── tree-sitter       (AST parsing framework)
+│   └── tree-sitter-go    (Go grammar)
 └── clap                  (CLI argument parsing)
 ```
 
