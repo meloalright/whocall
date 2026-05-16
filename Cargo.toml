@@ -7,6 +7,7 @@ members = [
     "crates/who-lang-python",
     "crates/who-lang-go",
     "crates/who-lang-ts",
+    "crates/who-lang-js",
 ]
 
 [workspace.package]
@@ -20,6 +21,7 @@ who-lang-rust = { path = "crates/who-lang-rust" }
 who-lang-python = { path = "crates/who-lang-python" }
 who-lang-go = { path = "crates/who-lang-go" }
 who-lang-ts = { path = "crates/who-lang-ts" }
+who-lang-js = { path = "crates/who-lang-js" }
 
 tree-sitter = "0.24"
 clap = { version = "4", features = ["derive"] }

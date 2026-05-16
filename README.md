@@ -26,6 +26,7 @@ npm install -g @whocall/cli
 - [x] Rust support
 - [x] Python support
 - [x] TypeScript support
+- [x] JavaScript support
 - [x] Go support
 - [ ] Java support
 - [ ] C support

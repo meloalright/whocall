@@ -1,0 +1,12 @@
+[package]
+name = "who-lang-js"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "JavaScript language support for who"
+
+[dependencies]
+who-core = { workspace = true }
+tree-sitter = { workspace = true }
+tree-sitter-javascript = "0.23"
+anyhow = { workspace = true }

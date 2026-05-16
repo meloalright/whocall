@@ -48,6 +48,14 @@ jobs:
             edge_comment_bad: commentedOutCall
             edge_samename_bad: callsLocalCapitalize
             extra_demo: "src/utils.ts#formatName"
+          - lang: JavaScript
+            sample_dir: samples/js-project
+            target_line: "src/utils.js:5"
+            target_symbol: "src/utils.js#capitalize"
+            edge_line: "src/utils.js:5"
+            edge_comment_bad: commentedOutCall
+            edge_samename_bad: callsLocalCapitalize
+            extra_demo: "src/utils.js#formatName"
 
     steps:
       - uses: actions/checkout@v4
