@@ -40,6 +40,14 @@ jobs:
             edge_comment_bad: commentedOutCall
             edge_samename_bad: callsLocalFormatOutput
             extra_demo: "pkg/utils.go#RenderText"
+          - lang: TypeScript
+            sample_dir: samples/ts-project
+            target_line: "src/utils.ts:5"
+            target_symbol: "src/utils.ts#capitalize"
+            edge_line: "src/utils.ts:5"
+            edge_comment_bad: commentedOutCall
+            edge_samename_bad: callsLocalCapitalize
+            extra_demo: "src/utils.ts#formatName"
 
     steps:
       - uses: actions/checkout@v4
