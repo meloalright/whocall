@@ -569,7 +569,7 @@ dependencies = [
 
 [[package]]
 name = "who-cli"
-version = "0.0.23"
+version = "0.0.24"
 dependencies = [
  "anyhow",
  "clap",
@@ -585,7 +585,7 @@ dependencies = [
 
 [[package]]
 name = "who-core"
-version = "0.0.23"
+version = "0.0.24"
 dependencies = [
  "anyhow",
  "ignore",
@@ -597,7 +597,7 @@ dependencies = [
 
 [[package]]
 name = "who-lang-go"
-version = "0.0.23"
+version = "0.0.24"
 dependencies = [
  "anyhow",
  "tree-sitter",
@@ -607,7 +607,7 @@ dependencies = [
 
 [[package]]
 name = "who-lang-python"
-version = "0.0.23"
+version = "0.0.24"
 dependencies = [
  "anyhow",
  "tree-sitter",
@@ -617,7 +617,7 @@ dependencies = [
 
 [[package]]
 name = "who-lang-rust"
-version = "0.0.23"
+version = "0.0.24"
 dependencies = [
  "anyhow",
  "tree-sitter",
@@ -627,7 +627,7 @@ dependencies = [
 
 [[package]]
 name = "who-lang-ts"
-version = "0.0.23"
+version = "0.0.24"
 dependencies = [
  "anyhow",
  "tree-sitter",
