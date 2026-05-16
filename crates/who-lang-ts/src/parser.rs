@@ -88,12 +88,7 @@ impl TypeScriptParser {
         }
     }
 
-    fn extract_function(
-        &self,
-        node: Node,
-        source: &[u8],
-        file_id: i64,
-    ) -> Option<Symbol> {
+    fn extract_function(&self, node: Node, source: &[u8], file_id: i64) -> Option<Symbol> {
         let name_node = node.child_by_field_name("name")?;
         let name = node_text(name_node, source).to_string();
 
@@ -117,13 +112,7 @@ impl TypeScriptParser {
         })
     }
 
-    fn extract_class(
-        &self,
-        node: Node,
-        source: &[u8],
-        file_id: i64,
-        symbols: &mut Vec<Symbol>,
-    ) {
+    fn extract_class(&self, node: Node, source: &[u8], file_id: i64, symbols: &mut Vec<Symbol>) {
         let class_name = match node.child_by_field_name("name") {
             Some(n) => node_text(n, source).to_string(),
             None => return,
@@ -554,10 +543,7 @@ fn extract_signature(node: Node, source: &[u8]) -> String {
     if let Some(brace_pos) = text.iter().position(|&b| b == b'{') {
         let sig = std::str::from_utf8(&text[..brace_pos]).unwrap_or("").trim();
         sig.to_string()
-    } else if let Some(arrow_pos) = text
-        .windows(2)
-        .position(|w| w == b"=>")
-    {
+    } else if let Some(arrow_pos) = text.windows(2).position(|w| w == b"=>") {
         let sig = std::str::from_utf8(&text[..arrow_pos + 2])
             .unwrap_or("")
             .trim();
@@ -658,15 +644,17 @@ mod tests {
 
     #[test]
     fn parse_imports() {
-        let source = b"import { readFile, writeFile as write } from 'fs';\nimport path from 'path';\n";
+        let source =
+            b"import { readFile, writeFile as write } from 'fs';\nimport path from 'path';\n";
         let tree = TypeScriptParser::parse_source(source, false).unwrap();
         let root = tree.root_node();
         let parser = TypeScriptParser::new();
         let mut imports = Vec::new();
         parser.extract_imports(root, source, 1, &mut imports);
         assert!(imports.iter().any(|i| i.local_name == "readFile"));
-        assert!(imports.iter().any(|i| i.local_name == "write"
-            && i.qualified_target == "fs.writeFile"));
+        assert!(imports
+            .iter()
+            .any(|i| i.local_name == "write" && i.qualified_target == "fs.writeFile"));
         assert!(imports.iter().any(|i| i.local_name == "path"));
     }
 
