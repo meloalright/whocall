@@ -81,15 +81,27 @@ whocall/
 │   │       ├── lib.rs
 │   │       └── parser.rs              # tree-sitter Python extraction
 │   │
-│   └── who-lang-go/                    # Go language support
+│   ├── who-lang-go/                    # Go language support
+│   │   └── src/
+│   │       ├── lib.rs
+│   │       └── parser.rs              # tree-sitter Go extraction
+│   │
+│   ├── who-lang-ts/                    # TypeScript language support
+│   │   └── src/
+│   │       ├── lib.rs
+│   │       └── parser.rs              # tree-sitter TypeScript/TSX extraction
+│   │
+│   └── who-lang-js/                    # JavaScript language support
 │       └── src/
 │           ├── lib.rs
-│           └── parser.rs              # tree-sitter Go extraction
+│           └── parser.rs              # tree-sitter JavaScript extraction
 │
 ├── samples/
 │   ├── rust-project/                   # Rust sample codebase for demos
 │   ├── python-project/                 # Python sample codebase for demos
-│   └── go-project/                     # Go sample codebase for demos
+│   ├── go-project/                     # Go sample codebase for demos
+│   ├── ts-project/                     # TypeScript sample codebase for demos
+│   └── js-project/                     # JavaScript sample codebase for demos
 │
 ├── npm/
 │   └── whocall-cli/                    # @whocall/cli npm package
@@ -98,8 +110,8 @@ whocall/
 │
 └── .github/workflows/
     ├── ci.yml                          # build, test, clippy, fmt
-    ├── integration.yml                 # end-to-end checks (Rust, Python, Go)
-    ├── showcase.yml                    # sample demos + edge cases (Rust, Python, Go matrix)
+    ├── integration.yml                 # end-to-end checks (Rust, Python, Go, TypeScript, JavaScript)
+    ├── showcase.yml                    # sample demos + edge cases (Rust, Python, Go, TypeScript, JavaScript matrix)
     └── release.yml                     # build binaries, Homebrew tap, npm publish
 ```
 
@@ -125,6 +137,14 @@ who-cli
 │   ├── who-core
 │   ├── tree-sitter       (AST parsing framework)
 │   └── tree-sitter-go    (Go grammar)
+├── who-lang-ts
+│   ├── who-core
+│   ├── tree-sitter       (AST parsing framework)
+│   └── tree-sitter-typescript (TypeScript/TSX grammar)
+├── who-lang-js
+│   ├── who-core
+│   ├── tree-sitter       (AST parsing framework)
+│   └── tree-sitter-javascript (JavaScript grammar)
 └── clap                  (CLI argument parsing)
 ```
 
@@ -165,17 +185,19 @@ Five entities stored in SQLite:
 
 ## Call Resolution
 
-After indexing, `resolve_all_calls()` runs a second pass over every file's unresolved call refs. Three strategies are tried in order:
+After indexing, `resolve_all_calls()` runs a second pass over every file's unresolved call refs. Four strategies are tried in order:
 
 ```
  Strategy              Confidence   When
  ──────────────────────────────────────────────────────────
- 1. Import match       0.75         callee name matches an import's local_name,
+ 1a. Import match      0.75         callee name matches an import's local_name,
                                     and the import's qualified_target resolves to
                                     exactly one symbol
- 2. Same-file match    0.60         callee name matches a symbol defined in the
+ 1b. Package-qualified 0.80         call like pkg.Func() where "pkg" matches an
+                                    import's local_name (Go's pkg.Func pattern)
+ 2.  Same-file match   0.60         callee name matches a symbol defined in the
                                     same file
- 3. Global unique      0.45         callee name matches exactly one symbol across
+ 3.  Global unique     0.45         callee name matches exactly one symbol across
                                     the entire index
 ```
 
